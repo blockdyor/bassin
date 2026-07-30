@@ -1,5 +1,5 @@
 manifestVersion: 1
-version: "2.0.2"
+version: "2.1.2"
 id: duckaxe-bassin
 name: Bassin
 tagline: Solo Bitcoin Mining Pool (ckPool)
@@ -13,7 +13,7 @@ description: >-
     - Be part of decentralized mining
 
 
-  Check out the FAQ page: https://github.com/duckaxe/bassin/wiki/FAQ
+  Check out the FAQ page: https://github.com/blockdyor/bassin/wiki/FAQ
 
 
   For academic and research purposes only.
@@ -22,19 +22,23 @@ dependencies:
   - bitcoin
 releaseNotes: >-
   Key highlights:
-    - New ckPool instance
-    - Improved web interface
+    - Replaced an unsafe HTML-injection pattern in the UI's number
+  formatting with safe React rendering. No visual or functional
+  change, purely a hardening fix.
+    - Added a copy-to-clipboard button next to the stratum host on the
+  onboarding screen, so you can grab it without selecting the text
+  by hand.
 port: 5008
-submitter: duckaxe
-developer: duckaxe
-website: https://github.com/duckaxe
-repo: https://github.com/duckaxe/bassin
-support: https://github.com/duckaxe/bassin/issues
-icon: https://raw.githubusercontent.com/duckaxe/bassin/main/duckaxe-bassin/icon.svg
+submitter: blockdyor
+developer: blockdyor
+website: https://github.com/blockdyor
+repo: https://github.com/blockdyor/bassin
+support: https://github.com/blockdyor/bassin/issues
+icon: https://raw.githubusercontent.com/blockdyor/bassin/main/duckaxe-bassin/icon.svg
 gallery:
-  - https://raw.githubusercontent.com/duckaxe/bassin/main/duckaxe-bassin/gallery_1.jpg
-  - https://raw.githubusercontent.com/duckaxe/bassin/main/duckaxe-bassin/gallery_2.jpg
-  - https://raw.githubusercontent.com/duckaxe/bassin/main/duckaxe-bassin/gallery_3.jpg
+  - https://raw.githubusercontent.com/blockdyor/bassin/main/duckaxe-bassin/gallery_1.jpg
+  - https://raw.githubusercontent.com/blockdyor/bassin/main/duckaxe-bassin/gallery_2.jpg
+  - https://raw.githubusercontent.com/blockdyor/bassin/main/duckaxe-bassin/gallery_3.jpg
 path: ""
 defaultUsername: ""
 defaultPassword: ""
