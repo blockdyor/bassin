@@ -40,7 +40,7 @@ services:
       - ${APP_DATA_DIR}/data/www:/www
 
   ui:
-    image: ghcr.io/blockdyor/bassin-ui:49969aa@sha256:363f80063a173777cde3bdc8754e18d25b80e266071a551d8e524c439a518bde
+    image: ghcr.io/blockdyor/bassin-ui:84f3c40@sha256:861c1a4d96a143aeca2e8a5a09e5248a076e68a490a9a28f036daa72eb715d03
     entrypoint: /bin/sh -c "cp -r /ui/* /www/"
     user: "1000:1000"
     volumes:
@@ -67,4 +67,5 @@ services:
     depends_on:
       - www
     restart: on-failure
+
     
