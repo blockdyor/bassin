@@ -13,11 +13,11 @@
 3. Find the Bitcoin block 🎉
 
 ### Wiki
-* [FAQ](https://github.com/duckaxe/bassin/wiki/FAQ)
+* [FAQ](https://github.com/blockdyor/bassin/wiki/FAQ)
 
 ### Repositories
 * [Bassin UI](https://github.com/blockdyor/bassin-ui)
-* [Bassin Widget](https://github.com/duckaxe/umbrel-bassin-widget)
+* [Bassin Widget](https://github.com/blockdyor/umbrel-bassin-widget)
 * [Bassin @ Umbrel](https://github.com/getumbrel/umbrel-apps/tree/master/bassin)
 * [Bassin @ blockdyor Community Store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin)
 * [ckPool Docker Image](https://github.com/getumbrel/docker-ckpool-solo/pkgs/container/docker-ckpool-solo)

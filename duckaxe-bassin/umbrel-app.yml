@@ -1,5 +1,5 @@
 manifestVersion: 1
-version: "2.1.2"
+version: "2.1.4"
 id: duckaxe-bassin
 name: Bassin
 tagline: Solo Bitcoin Mining Pool (ckPool)
@@ -22,12 +22,10 @@ dependencies:
   - bitcoin
 releaseNotes: >-
   Key highlights:
-    - Replaced an unsafe HTML-injection pattern in the UI's number
-  formatting with safe React rendering. No visual or functional
-  change, purely a hardening fix.
-    - Added a copy-to-clipboard button next to the stratum host on the
-  onboarding screen, so you can grab it without selecting the text
-  by hand.
+    - Sanitize user directory parsing against path traversal and autoindex parent links.
+    - Add safe localStorage parsing to prevent UI crashes from corrupted browser storage.
+    - Update build dependencies to resolve all audit vulnerabilities.
+    - Update footer repository link to point to blockdyor/bassin with safe new-tab attributes.
 port: 5008
 submitter: blockdyor
 developer: blockdyor
