@@ -4,12 +4,12 @@
 
 ## Choose a release channel
 
-As of 9 October 2026:
+As of 21 November 2026:
 
 | Channel | Version | App ID | Web port | Stratum port |
 | --- | --- | --- | --- | --- |
-| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Bassin 2.1.10 / CKPool 1.2.0 | `blockdyor-bassin` | `5009` | `3456` |
-| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4; redesigned 2.1.9 update proposed in [PR #6167](https://github.com/getumbrel/umbrel-apps/pull/6167) | `bassin` | `5008` | `3456` |
+| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Bassin 2.1.12 / CKPool 1.2.0 | `blockdyor-bassin` | `5009` | `3456` |
+| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.12 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` |
 
 The linked store manifests are the source of truth for later releases. The `duckaxe-bassin` package retained in the main project repository is legacy packaging, not the current community installation source.
 
@@ -29,7 +29,7 @@ The standard package fills in the node’s RPC credentials and ZMQ hashblock end
 
 Use the update offered by the store from which you installed Bassin. After updating, close and reopen the app and reload the browser page if an old interface remains cached. Check the Bassin version in the header; the separate CKPool version is detected from the running pool installation.
 
-In 2.1.10, **Settings → Bitcoin Node** has a **Poll for new blocks** switch. The overall dashboard design is the same as the preceding redesigned releases.
+If you use a public Bitcoin RPC endpoint for the globe marker, configure HTTPS for the location helper. The standard private Umbrel connection needs no change.
 
 The current community package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. A new template is not automatically applied to that existing file. The [settings guide](settings.md) explains how to make an intentional configuration change.
 
@@ -57,4 +57,4 @@ Keep configuration files and backups out of `data/www`, which is served by the w
 
 ## Need help?
 
-Start with the [FAQ](FAQ.md) and [Settings and notifications](settings.md). For an issue report, include the release channel, Bassin and CKPool versions, hardware, browser, and relevant redacted logs. Device emulation tests do not replace testing on the actual device: the maintainer has tested the redesigned app through the community store on a CMRat with Raspberry Pi CM5, but that does not establish every update path or every iOS device combination.
+Start with the [FAQ](FAQ.md) and [Settings and notifications](settings.md). For an issue report, include the release channel, Bassin and CKPool versions, hardware, browser, and relevant redacted logs. Device emulation tests do not replace testing on the actual device: the maintainer has tested the redesigned app through the community store on a CMRat with Raspberry Pi CM5, on an earlier release. No physical umbrelOS install, update, restart, or persistence test is reported for 2.1.12.

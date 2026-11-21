@@ -4,7 +4,7 @@
 
 ## Which version does this documentation cover?
 
-The redesigned community release, Bassin 2.1.10 with CKPool 1.2.0. The official store can ship a different version. Check the app header and the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
+The redesigned community release, Bassin 2.1.12 with CKPool 1.2.0. The official store can ship a different version. Check the app header and the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
 
 ## What do I need, and what credentials go in my miner?
 
@@ -26,7 +26,7 @@ The settings form initially contains a starter template. It does not read your r
 
 ## Do I need to change block notifications after updating?
 
-No, not for an existing working standard Umbrel configuration. It already includes the node’s ZMQ endpoint. In 2.1.10 the switch is called **Poll for new blocks**: on adds periodic RPC checks, while off disables those checks for the first node. It does not turn ZMQ on or off.
+No, not for an existing working standard Umbrel configuration. It already includes the node’s ZMQ endpoint. Since 2.1.10 the switch has been called **Poll for new blocks**: on adds periodic RPC checks, while off disables those checks for the first node. It does not turn ZMQ on or off.
 
 You do not need Bitcoin Core’s separate `blocknotify` command alongside the standard ZMQ setup. Read [ZMQ notifications and polling](settings.md#zmq-notifications-and-polling) before changing the configuration.
 
@@ -63,6 +63,8 @@ UTC. Insights includes a UTC clock; chart labels and tooltips, worker last-share
 ## What does the globe’s blue marker represent?
 
 The approximate location of a public IP reported by your Bitcoin node. You can drag the globe to rotate it. It does not detect the dashboard visitor’s IP or request browser location permission.
+
+The node-location helper uses HTTPS for public Bitcoin RPC endpoints. It allows plain HTTP only to a private or loopback address. This rule applies to the globe marker, not to miner Stratum connections or CKPool’s mining RPC client.
 
 The server-side helper sends the node’s public IP to `ipwho.is` for approximate coordinates and caches the result. The browser reads the resulting local metadata file. If the node only reports private, loopback, or Tor addresses, or no usable metadata is available, the globe has no marker. A remotely hosted Bitcoin node produces a marker at that node’s approximate location, not your miner’s location.
 

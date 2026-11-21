@@ -8,15 +8,15 @@ A zero-fee Bitcoin solo mining pool for Umbrel. Connect your miners to your own 
 
 Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard built from the official [Umbrel Bitcoin UI](https://github.com/getumbrel/umbrel-bitcoin/tree/master/apps/ui). The new interface keeps Bassin’s water colours while bringing the familiar Umbrel layout, typography, navigation, and room for better mining tools.
 
-**Current community release: Bassin v2.1.10 with CKPool v1.2.0.** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official Umbrel listing follows a separate release schedule; the [proposal to bring the redesigned UI and CKPool 1.2.0 to it](https://github.com/getumbrel/umbrel-apps/pull/6167) is pending as of 9 October 2026.
+**Current community release: Bassin v2.1.12 with CKPool v1.2.0.** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 21 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.12.
 
 ![Bassin v2.1.10 Home dashboard](docs/images/home.png)
 
-*Screenshots use sample mining data, not a live pool.*
+*Home in 2.1.10, with sample mining data. Since 2.1.11, the five hashrate averages appear as water columns on a shared scale.*
 
 ## What’s inside
 
-- **Home:** interactive globe, accepted/rejected share quality, and hashrate averages from one minute to seven days.
+- **Home:** interactive globe, accepted/rejected share quality, and animated hashrate averages from one minute to seven days.
 - **Insights:** workers, round best share, best share ever, share rate, uptime, a hashrate chart, and searchable worker details.
 - **Settings:** mining options, Bitcoin Core RPC connection fields, clearer ZMQ notification and polling controls, and an advanced JSON editor.
 - **Logs:** searchable pool logs with pause, follow, and download controls.
@@ -48,7 +48,7 @@ Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard bu
 
 Use a receiving address from your own Bitcoin wallet. Replace the angle-bracket placeholders; `user.worker` is not a valid substitute for your Bitcoin address. Solo mining does not provide regular payouts for submitted shares.
 
-The [official Umbrel App Store listing](https://apps.umbrel.com/app/bassin) is also available, but may have an older release. Read the [installation guide](docs/getting-started.md) before switching channels: the apps have different IDs and data directories, and both use Stratum port `3456`.
+The [official Umbrel App Store listing](https://apps.umbrel.com/app/bassin) is also available, on its own release schedule. Read the [installation guide](docs/getting-started.md) before switching channels: the apps have different IDs and data directories, and both use Stratum port `3456`.
 
 ## Documentation
 

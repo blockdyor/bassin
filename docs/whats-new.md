@@ -2,7 +2,17 @@
 
 [Back to Bassin](../README.md)
 
-This guide covers the changes now available in the community release through **2.1.10**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+This guide covers the changes now available in the community release through **2.1.12**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+
+## 2.1.12 — 21 November 2026
+
+The node-location helper uses HTTPS for public Bitcoin RPC endpoints. It allows plain HTTP only to a private or loopback address. This rule applies to the globe marker, not to miner Stratum connections or CKPool’s mining RPC client. If the helper cannot obtain a location, the globe can still display without a marker. Updating does not require replacing your `ckpool.conf` or resetting mining data.
+
+The [community package](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/commit/71787f671c42afc14ba50a871f57127cff3ac82c) pins UI image `1608d5f` and CKPool image `v1.2.0-1`. The [production build](https://github.com/blockdyor/bassin-ui/actions/runs/44946393302) verified the UI and published images for amd64 and arm64. It was not a physical umbrelOS installation test.
+
+## 2.1.11 — Home hashrate averages
+
+Home replaced its five hashrate blocks with water columns on a shared, zero-based scale. The values are still CKPool averages, not browser chart samples. The columns respect reduced-motion preferences.
 
 ## A UI built from Umbrel Bitcoin
 
@@ -16,9 +26,9 @@ Home combines the pool’s hashrate, share-quality ring, and five hashrate avera
 
 Connect includes Stratum details, a QR code, and worker setup instructions explaining the full solo block reward and zero pool commission. Settings offers a local configuration editor and a searchable log viewer. GitHub support links are accessible from the interface.
 
-![Bassin Insights](images/insights.png)
+![Bassin 2.1.10 Insights](images/insights.png)
 
-*Sample mining data for documentation.*
+*Bassin 2.1.10 with sample mining data.*
 
 ## Readability, time, and mobile behaviour
 
@@ -46,4 +56,4 @@ This release does not enable optional mining IPC or add Stratum V2. Backend impr
 
 ## Official and community releases
 
-The current community release is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). The proposal for the official store is [Umbrel apps PR #6167](https://github.com/getumbrel/umbrel-apps/pull/6167); it remains under review as of 9 October 2026. A community update does not automatically update the official listing.
+The current community release is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 21 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.12 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.
