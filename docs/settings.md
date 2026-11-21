@@ -2,7 +2,7 @@
 
 [Back to Bassin](../README.md)
 
-These instructions describe community release 2.1.12. Open **Settings → Bitcoin Node** for the Bitcoin Core connection, ZMQ endpoint, and polling controls.
+These instructions describe community release 2.1.12-patch.1. Open **Settings → Bitcoin Node** for the Bitcoin Core connection, ZMQ endpoint, and polling controls.
 
 ## What the editor does
 

@@ -8,8 +8,8 @@ As of 21 November 2026:
 
 | Channel | Version | App ID | Web port | Stratum port |
 | --- | --- | --- | --- | --- |
-| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Bassin 2.1.12 / CKPool 1.2.0 | `blockdyor-bassin` | `5009` | `3456` |
-| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.12 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` |
+| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Package 2.1.12-patch.1 / UI 2.1.12 / CKPool 1.2.0 | `blockdyor-bassin` | `5009` | `3456` |
+| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.12-patch.1 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` |
 
 The linked store manifests are the source of truth for later releases. The `duckaxe-bassin` package retained in the main project repository is legacy packaging, not the current community installation source.
 
@@ -61,4 +61,12 @@ Keep configuration files and backups out of `data/www`: the web server serves th
 
 ## Need help?
 
-Start with the [FAQ](FAQ.md) and [Settings and notifications](settings.md). For an issue report, include the release channel, Bassin and CKPool versions, hardware, browser, and relevant redacted logs. Device emulation tests do not replace testing on the actual device: the maintainer has tested the redesigned app through the community store on a CMRat with Raspberry Pi CM5, on an earlier release. No physical umbrelOS install, update, restart, or persistence test is reported for 2.1.12.
+Start with the [FAQ](FAQ.md) and [Settings and notifications](settings.md). For an issue report, include the release channel, Bassin and CKPool versions, hardware, browser, and relevant redacted logs. Device emulation tests do not replace testing on the actual device: the maintainer has tested the redesigned app through the community store on a CMRat with Raspberry Pi CM5, on an earlier release. No physical umbrelOS install, update, restart, or persistence test is reported for 2.1.12-patch.1.
+
+## Interrupted first setup
+
+The package does not guess whether an existing `data/config/ckpool.conf` is partial. If CKPool reports a configuration error after an interrupted **first** setup:
+
+1. Stop Bassin in Umbrel. In the installed app directory (`blockdyor-bassin` for community, `bassin` for official), back up the stopped app data to a private location outside `data/www`, preserving permissions. Configs may contain RPC credentials. Do not uninstall or remove `data/www`.
+2. Inspect the config privately. Invalid JSON or a truncated final line can indicate an incomplete render; a startup error alone does not. If the config is valid, customized, or its status is uncertain, leave it in place and investigate the logs. Prefer restoring a known-good private backup.
+3. Only if you confirm a partial config and want fresh defaults, move **only** `data/config/ckpool.conf` to a unique, unused private backup path while stopped. Leave `ckpool.conf.template`, pool history, users and logs in place. Start the patched package, verify the node, payout and mining settings and check pool activity before discarding any backup.

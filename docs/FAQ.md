@@ -4,7 +4,7 @@
 
 ## Which version does this documentation cover?
 
-The redesigned community release, Bassin 2.1.12 with CKPool 1.2.0. Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
+The redesigned community release, Bassin package 2.1.12-patch.1 (UI 2.1.12) with CKPool 1.2.0. Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
 
 ## What do I need, and what credentials go in my miner?
 

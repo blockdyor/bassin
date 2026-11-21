@@ -2,7 +2,11 @@
 
 [Back to Bassin](../README.md)
 
-This guide covers the changes now available in the community release through **2.1.12**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+This guide covers the changes now available in the community release through **2.1.12-patch.1**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+
+## 2.1.12-patch.1 — package update
+
+First-time configuration is published only after rendering succeeds. On the community store, the CLI now reads pool and worker statistics from `data/www`. No UI or CKPool image changed. See [recovery after an interrupted first setup](getting-started.md#interrupted-first-setup).
 
 ## 2.1.12 — 21 November 2026
 
@@ -56,4 +60,4 @@ This release does not enable optional mining IPC or add Stratum V2. Backend impr
 
 ## Official and community releases
 
-The current community release is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 21 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.12 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.
+The current community release is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 21 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.12-patch.1 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.
