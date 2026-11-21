@@ -4,15 +4,17 @@
 
 # Bassin
 
-A zero-fee Bitcoin solo mining pool for Umbrel. Connect your miners to your own Bitcoin node, follow their progress, and keep the full block reward if one of them finds a block.
+Run a Bitcoin solo mining pool on your Umbrel. Your node supplies the block templates. If your miner finds a block, the default solo configuration pays the block reward to your Bitcoin address. Bassin charges 0% pool fees.
 
-Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard built from the official [Umbrel Bitcoin UI](https://github.com/getumbrel/umbrel-bitcoin/tree/master/apps/ui). The new interface keeps Bassin’s water colours while bringing the familiar Umbrel layout, typography, navigation, and room for better mining tools.
+Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard based on the [Umbrel Bitcoin UI](https://github.com/getumbrel/umbrel-bitcoin/tree/master/apps/ui). Open Home to see your pool’s hashrate, or use Insights to check an individual worker.
 
 **Current community release: Bassin v2.1.12 with CKPool v1.2.0.** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 21 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.12.
 
-![Bassin v2.1.10 Home dashboard](docs/images/home.png)
+![Bassin gallery: mining with your own Bitcoin node](docs/gallery/01-decentralization.jpg)
 
-*Home in 2.1.10, with sample mining data. Since 2.1.11, the five hashrate averages appear as water columns on a shared scale.*
+California is the demo location shown in the gallery. Self-hosting keeps your pool under your control; it does not make mining anonymous. A winning block’s payout address is public.
+
+[View the 0% pool fees panel](docs/gallery/02-fees.jpg) · [View the self-hosting and privacy panel](docs/gallery/03-privacy.jpg)
 
 ## What’s inside
 
