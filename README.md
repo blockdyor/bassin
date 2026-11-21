@@ -16,6 +16,8 @@ Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard bu
 
 ## What’s inside
 
+These features describe the community dashboard. The official store’s 2.1.4 dashboard does not have the Connect dialog, Insights, or the Settings editor and log viewer. You can still connect a miner using the values below.
+
 - **Home:** interactive globe, accepted/rejected share quality, and animated hashrate averages from one minute to seven days.
 - **Insights:** workers, round best share, best share ever, share rate, uptime, a hashrate chart, and searchable worker details.
 - **Settings:** mining options, Bitcoin Core RPC connection fields, clearer ZMQ notification and polling controls, and an advanced JSON editor.
@@ -31,7 +33,7 @@ Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard bu
 ## Install and connect
 
 1. Run a fully synchronized Bitcoin node on Umbrel.
-2. For the current community release, add this repository URL in Umbrel’s community app store settings:
+2. For the current community release, open **App Store → Community App Stores** on your Umbrel and add the following store URL (not this documentation repository):
 
    ```text
    https://github.com/blockdyor/blockdyor-umbrel-community-app-store
@@ -46,7 +48,7 @@ Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard bu
    | Username | `<your-bitcoin-address>.<worker-name>` |
    | Password | `x` |
 
-Use a receiving address from your own Bitcoin wallet. Replace the angle-bracket placeholders; `user.worker` is not a valid substitute for your Bitcoin address. Solo mining does not provide regular payouts for submitted shares.
+Use a receiving address from your own Bitcoin wallet. The address before the dot selects the payout; the suffix identifies the miner. An address alone also works. Never enter a wallet seed or private key. Solo mining does not provide regular payouts for submitted shares.
 
 The [official Umbrel App Store listing](https://apps.umbrel.com/app/bassin) is also available, on its own release schedule. Read the [installation guide](docs/getting-started.md) before switching channels: the apps have different IDs and data directories, and both use Stratum port `3456`.
 

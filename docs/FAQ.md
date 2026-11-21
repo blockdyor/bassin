@@ -4,13 +4,13 @@
 
 ## Which version does this documentation cover?
 
-The redesigned community release, Bassin 2.1.12 with CKPool 1.2.0. The official store can ship a different version. Check the app header and the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
+The redesigned community release, Bassin 2.1.12 with CKPool 1.2.0. Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
 
 ## What do I need, and what credentials go in my miner?
 
 A running, fully synchronized Bitcoin node and a miner that can connect to Bassin’s Stratum endpoint. The standard Umbrel package connects to Umbrel’s Bitcoin node for you.
 
-Use `stratum+tcp://<your-Umbrel-address>:3456`, username `<your-bitcoin-address>.<worker-name>`, and password `x`. Supply your own valid receiving address, not the literal word `user`. The miner password is separate from the Bitcoin node’s private RPC password. See [Getting started](getting-started.md).
+Use `stratum+tcp://<your-Umbrel-address>:3456`, username `<your-bitcoin-address>.<worker-name>`, and password `x`. Use a receiving address from your own wallet, not the literal word `user`. In the [packaged CKPool parser](https://github.com/ckolivas/ckpool/blob/2e44101e2da2c11f499be76d16e6a26cd95cfea7/src/stratifier.c#L5754-L5777), the first dot or underscore ends the payout address. An address alone works; append `.rig1` or `.rig2` to distinguish miners paid to that same address. The miner password is separate from the Bitcoin node’s private RPC password. See [Getting started](getting-started.md).
 
 ## Is there a pool fee, and who receives a found block?
 
