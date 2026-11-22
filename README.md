@@ -59,7 +59,7 @@ The [official Umbrel App Store listing](https://apps.umbrel.com/app/bassin) is a
 ## Documentation
 
 - [Getting started, updates, and release channels](docs/getting-started.md)
-- [Settings, ZMQ, polling, and applying a configuration](docs/settings.md)
+- [Settings, Stratum V2, ZMQ, polling, and live auto-save](docs/settings.md)
 - [FAQ: shares, history, UTC, versions, privacy, and troubleshooting](docs/FAQ.md)
 - [What changed in the redesigned Bassin](docs/whats-new.md)
 - [GitHub Wiki](https://github.com/blockdyor/bassin/wiki)

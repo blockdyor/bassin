@@ -10,7 +10,7 @@ This guide covers the changes now available in the community release through **2
 - **Automatic CKPool reload:** CKPool’s startup supervisor watches `/config/ckpool.conf` for changes and gracefully reloads CKPool (`SIGTERM`) within seconds, automatically publishing any newly generated Stratum V2 authority public key to **Connect → Stratum V2**.
 - **Server-side credential protection & Umbrel auth:** Stored Bitcoin RPC passwords are redacted on read and preserved automatically on save (eliminating the false “Bitcoin node 1 needs host:port, RPC username, and RPC password” error when toggling Stratum V2). Umbrel’s built-in `app_proxy` authentication is now enabled to protect the live dashboard and configuration API, while private SV2 Noise keys remain isolated in `data/sv2/` (never mounted in `ui`).
 - **Clearer Bitcoin node wording:** Clarifies compatibility with both **Bitcoin Core** and **Bitcoin Knots** (including 29.3 and earlier versions) over standard JSON-RPC + ZMQ.
-- UI build [`26117d4`](https://github.com/blockdyor/bassin-ui/actions/runs/45056606663), CKPool build [`v1.2.0-2`](https://github.com/blockdyor/docker-ckpool-solo/actions/runs/45047644486).
+- Community package commit [`d1e9510`](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/commit/d1e9510), UI build [`26117d4`](https://github.com/blockdyor/bassin-ui/actions/runs/45056606663), CKPool build [`v1.2.0-2`](https://github.com/blockdyor/docker-ckpool-solo/actions/runs/45047644486).
 
 ## 2.1.14 — 22 November 2026 (Stratum V2, CKPool `v1.2.0-2`, Full Settings)
 
@@ -51,7 +51,7 @@ Bassin keeps its water colours and identity while adopting the familiar Umbrel t
 
 Home combines the pool’s hashrate, share-quality ring, and five hashrate averages. Insights adds worker details, share rate, uptime, round best share, best share ever, and a chart of samples collected during the visit. The distinction between a round record and retained lifetime worker records is explained in the [FAQ](FAQ.md#what-are-round-best-share-and-best-share-ever).
 
-Connect includes Stratum details, a QR code, and worker setup instructions explaining the full solo block reward and zero pool commission. Settings offers a local configuration editor and a searchable log viewer. GitHub support links are accessible from the interface.
+Connect includes Stratum V1 and Noise-encrypted Stratum V2 details, QR codes, and worker setup instructions explaining the full solo block reward and zero pool commission. Settings offers live auto-saving configuration controls (with backup import/export) and a searchable log viewer. GitHub support links are accessible from the interface.
 
 ![Bassin 2.1.10 Insights](images/insights.png)
 
@@ -71,7 +71,7 @@ The old “Block Notifications” switch was ambiguous: its configuration flag a
 
 The polling interval now sits with notification settings. ZMQ has clearer hashblock and port guidance plus inline address validation. Plain Bitcoin Core RPC labels replace raw `btcd[0]` field labels, and settings search can find node and notification options.
 
-These remain file-editing controls. They do not test notification delivery or apply the running configuration. See [Settings and notifications](settings.md).
+In 2.1.10 these were file-editing controls; starting in **2.1.15**, valid changes auto-save directly to `/config/ckpool.conf` and reload CKPool automatically (notification delivery is still not probed from the browser). See [Settings and notifications](settings.md).
 
 ## The CKPool container
 

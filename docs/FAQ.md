@@ -39,7 +39,7 @@ You do not need Bitcoin Core’s separate `blocknotify` command alongside the st
 
 ## Does `btcd[0].pass` mean I’m using a different Bitcoin implementation?
 
-No. In CKPool’s JSON, `btcd` is the list of Bitcoin node connections, `[0]` selects the first node, and `pass` is its RPC password. The regular form uses plain Bitcoin Core RPC labels; the underlying keys remain visible in Advanced because CKPool expects them.
+No. In CKPool’s JSON, `btcd` is the list of Bitcoin node connections, `[0]` selects the first node, and `pass` is its RPC password. The regular form uses plain Bitcoin node RPC labels; the underlying keys remain visible in Advanced because CKPool expects them.
 
 ## Is Stratum V2 and Mining IPC supported?
 
