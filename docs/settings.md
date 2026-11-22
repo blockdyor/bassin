@@ -2,7 +2,7 @@
 
 [Back to Bassin](../README.md)
 
-These instructions describe community release 2.1.12-patch.1. Open **Settings → Bitcoin Node** for the Bitcoin Core connection, ZMQ endpoint, and polling controls.
+These instructions describe community release 2.1.14. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and optional Mining IPC controls, and **Mining** / **Advanced** for full CKPool tuning.
 
 ## What the editor does
 
@@ -51,17 +51,43 @@ Use an endpoint such as `tcp://<node-address>:<hashblock-port>`, with a port fro
 
 **Clearing the ZMQ field does not disable ZMQ.** With no explicit endpoint, CKPool uses `tcp://127.0.0.1:28332`. In the pool container, localhost means that container, not the separate Bitcoin node container. Importing the existing configuration preserves the correct Umbrel address.
 
+## Stratum V2 and Noise keys
+
+Open **Settings → Stratum V2** to configure Noise-encrypted Stratum V2:
+
+| Setting | Key | Meaning |
+| --- | --- | --- |
+| **Enable Stratum V2 Mining** | `sv2url` | Bind address(es) for SV2 Mining clients (container default `0.0.0.0:3336`, published on host port `3457`). Works over standard JSON-RPC + ZMQ with both Bitcoin Core and Bitcoin Knots 29.3+. |
+| **Enable Job Declaration (JDS)** | `sv2jdurl` | Bind address(es) for SV2 Job Declaration clients (container default `0.0.0.0:3337`, published on host port `3458`). Validating declared block templates requires Bitcoin Core v32.x Mining IPC (`ipcmining`); without IPC, CKPool rejects declared jobs fail-closed while standard SV2 mining continues normally. |
+| **Authority Key Path** | `sv2_authority_key` | Private secp256k1 Noise CA key path. Use `/sv2/sv2_authority.key` so the authority public key survives container restarts. |
+| **Static Server Key Path** | `sv2_static_key` | Private server Noise static key path. Use `/sv2/sv2_static.key`. |
+
+CKPool creates missing Noise keys automatically on first start. Never place private keys under `/www`. Without explicit paths, CKPool defaults to `/tmp`, which resets on restart and invalidates miner `stratum2+tcp://` URLs. Once running, Bassin’s helper reads the public Base58Check authority key from CKPool’s log and publishes only that public metadata to `/pool/sv2.json` for **Connect → Stratum V2**.
+
 ## Other settings
 
-**Mining** contains minimum, starting, and maximum share difficulty plus the coinbase signature. The community template uses minimum `1`, starting `42`, and maximum `0` (no maximum). Automatic difficulty adjustment is handled by CKPool.
+**Mining** exposes:
+- **Minimum Difficulty** (`mindiff`, template `1`), **Starting Difficulty** (`startdiff`, template `42`), **High Difficulty Floor** (`highdiff`, optional), and **Maximum Difficulty** (`maxdiff`, `0` = unlimited).
+- **Coinbase Signature** (`btcsig`, up to 38 UTF-8 bytes).
+- **CKPool Developer Donation** (`donation`, `0` disabled or `0.1–99.9%`).
+- **Version Rolling Mask** (`version_mask`, 1–8 hex digits, default `1fffe000`; set `0` to disable Stratum V2 version rolling).
+- **Drop Idle Clients** (`dropidle`, seconds, `0` = never drop idle clients).
 
-**Advanced** includes periodic work updates and the full configuration JSON. The default work update interval is 30 seconds; it is separate from detecting a new block. Keep `logdir` as `/www` in the standard deployment so the UI can read statistics and logs. Changing Stratum listeners also requires corresponding container port changes.
+**Advanced** exposes:
+- **Work Update Interval** (`update_interval`, default `30` s) and **Log Directory** (`logdir`, keep `/www` for Bassin UI).
+- **Stratum V1 Listeners** (`serverurl`, comma-separated `host:port`; changing ports also requires matching container port mappings).
+- **Extranonce1 / Extranonce2 Lengths** (`nonce1length` `2–8` default `4`, `nonce2length` `2–8` default `8`).
+- **Connection Limits:** `maxclients`, `maxusers`, `maxsubclients` (`-1` = unlimited, default `65536`), `maxsendqueue` (bytes), and **Allow Client Reconnect** (`reconnect`, default enabled).
+- **Custom Configuration:** full raw JSON editor that preserves additional nodes and custom CKPool options.
 
-## CKPool 1.2.0 and IPC
+## CKPool v1.2.0-2, Bitcoin Knots 29.3, and Mining IPC
 
-The current `blockdyor/docker-ckpool-solo:v1.2.0-1` image includes ZMQ support, but not the optional Cap’n Proto dependencies for mining IPC. Adding `ipcmining` or `ipctemplate` in Advanced will not make IPC available in that image. A future IPC integration also requires a compatible Bitcoin node and a shared, accessible socket.
+The `blockdyor/docker-ckpool-solo:v1.2.0-2` image (upstream commit `be3e1e07` with pinned `secp256k1` `ebf59432`) compiles in **ZeroMQ**, **Stratum V2 (`--enable-sv2`)**, and optional **Cap’n Proto Mining IPC**.
 
-The [pinned upstream configuration reference](https://github.com/ckolivas/ckpool/blob/2e44101e2da2c11f499be76d16e6a26cd95cfea7/README) and [container build](https://github.com/blockdyor/docker-ckpool-solo/blob/v1.2.0-1/Dockerfile) describe the underlying options and compiled capabilities.
+- **Bitcoin Knots 29.3 and older Bitcoin Core versions:** Leave **Mining IPC Socket (`ipcmining`)** blank in **Settings → Bitcoin Node**. CKPool uses standard JSON-RPC + ZMQ and never opens an IPC socket, so both Stratum V1 and Stratum V2 solo mining work out of the box.
+- **Bitcoin Core v32.x Mining IPC (opt-in):** Set `ipcmining` to a mounted Unix socket from `bitcoind -ipcbind` if you want IPC template/block notifications or Stratum V2 Job Declaration (`sv2jdurl`).
+
+The [pinned upstream configuration reference](https://bitbucket.org/ckolivas/ckpool/src/be3e1e0796fbea60b7792a9b62fc2614764e1fc0/README.md) and [container build](https://github.com/blockdyor/docker-ckpool-solo/blob/v1.2.0-2/Dockerfile) describe the underlying options and compiled capabilities.
 
 ![Bitcoin node notification controls in Bassin 2.1.10](images/notifications.png)
 

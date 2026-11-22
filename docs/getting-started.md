@@ -4,24 +4,26 @@
 
 ## Choose a release channel
 
-As of 21 November 2026:
+As of 22 November 2026:
 
-| Channel | Version | App ID | Web port | Stratum port |
+| Channel | Version | App ID | Web port | Stratum ports |
 | --- | --- | --- | --- | --- |
-| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Package 2.1.12-patch.1 / UI 2.1.12 / CKPool 1.2.0 | `blockdyor-bassin` | `5009` | `3456` |
-| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.12-patch.1 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` |
+| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Package 2.1.14 / UI 2.1.14 / CKPool `v1.2.0-2` (`be3e1e07`) | `blockdyor-bassin` | `5009` | `3456` (SV1), `3457` (SV2), `3458` (SV2 JD) |
+| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.14 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` (2.1.14 adds `3457`, `3458`) |
 
 The linked store manifests are the source of truth for later releases. The `duckaxe-bassin` package retained in the main project repository is legacy packaging, not the current community installation source.
 
 ## Install the community release
 
-1. Make sure Umbrel’s Bitcoin node is fully synchronized and running.
+1. Make sure Umbrel’s Bitcoin node is fully synchronized and running (either **Bitcoin Core** or **Bitcoin Knots 29.3+** works out of the box via JSON-RPC + ZMQ).
 2. On your Umbrel, open **App Store → Community App Stores** and add `https://github.com/blockdyor/blockdyor-umbrel-community-app-store`. Use the store root, not this documentation repository or its legacy `duckaxe-bassin` directory.
 3. Install Bassin from the added store.
-4. Open the app from Umbrel and select **Connect → Worker Setup**.
-5. Point your miner at `stratum+tcp://<your-Umbrel-address>:3456`, using `<your-bitcoin-address>.<worker-name>` as its username and `x` as its password.
+4. Open the app from Umbrel and select **Connect → Stratum** (V1), **Connect → Stratum V2**, or **Connect → Worker Setup**.
+5. Point your miner at:
+   - **Stratum V1:** `stratum+tcp://<your-Umbrel-address>:3456`, username `<your-bitcoin-address>.<worker-name>`, password `x`.
+   - **Stratum V2 (Noise-encrypted):** `stratum2+tcp://<your-Umbrel-address>:3457/<authority-pubkey>` (shown with a QR code in **Connect → Stratum V2**), `user_identity` `<your-bitcoin-address>.<worker-name>`.
 
-The Connect QR code uses the hostname in your browser’s address bar. If that name is only reachable through a proxy, enter your Umbrel’s LAN address on the miner instead. Miners use host TCP port `3456`, not the web port or the container’s internal `3333`. Give each miner a distinct worker name so you can identify it in Insights. Look for accepted shares on the miner; the dashboard may take a polling interval to show the worker.
+The Connect QR codes use the hostname in your browser’s address bar. If that name is only reachable through a proxy, enter your Umbrel’s LAN address on the miner instead. Miners use host TCP port `3456` (SV1) or `3457` (SV2) — and `3458` if Job Declaration is enabled — not the web port or the container’s internal `3333`/`3336`/`3337` ports. Give each miner a distinct worker name so you can identify it in Insights. Look for accepted shares on the miner; the dashboard may take a polling interval to show the worker.
 
 On official 2.1.4, there is no **Connect → Worker Setup**, Insights, or Settings editor/log viewer. Use the same miner fields in step 5 and check the version in the Umbrel app listing rather than looking for the community UI’s header.
 
@@ -33,7 +35,7 @@ Use the update offered by the store from which you installed Bassin. After updat
 
 If you use a public Bitcoin RPC endpoint for the globe marker, configure HTTPS for the location helper. The standard private Umbrel connection needs no change.
 
-The current community package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. A new template is not automatically applied to that existing file. The [settings guide](settings.md) explains how to make an intentional configuration change.
+The current community package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. Fresh installs enable Stratum V2 mining out of the box with persistent Noise keys in `data/sv2/`. Existing installations keep their `ckpool.conf` untouched and can enable Stratum V2 in **Settings → Stratum V2**; the [settings guide](settings.md) explains how to apply an intentional configuration change.
 
 ## Switching between official and community installations
 
@@ -53,15 +55,16 @@ Under Umbrel’s data root, use `app-data/blockdyor-bassin/` for the community a
 | --- | --- |
 | `data/config/ckpool.conf` | Active pool configuration, including private RPC credentials |
 | `data/config/ckpool.conf.template` | First-install template |
-| `data/www/pool/` | Pool statistics and published metadata |
+| `data/sv2/` | Private persistent Stratum V2 Noise keys (`sv2_authority.key`, `sv2_static.key`), chmod `0700`, never served by `www` |
+| `data/www/pool/` | Pool statistics and published metadata (`pool.status`, `version.json`, `location.json`, `sv2.json`) |
 | `data/www/users/` | Retained user and worker statistics |
 | `data/www/ckpool.log` | Pool log |
 
-Keep configuration files and backups out of `data/www`: the web server serves that directory, and the standard package disables Umbrel’s proxy authentication for it. Keep the dashboard on a trusted network. Logs and user records can reveal payout addresses and worker names; redact those and RPC credentials before sharing diagnostics.
+Keep configuration files, `data/sv2/` keys, and backups out of `data/www`: the web server serves that directory, and the standard package disables Umbrel’s proxy authentication for it. Keep the dashboard on a trusted network. Logs and user records can reveal payout addresses and worker names; redact those and RPC credentials before sharing diagnostics.
 
 ## Need help?
 
-Start with the [FAQ](FAQ.md) and [Settings and notifications](settings.md). For an issue report, include the release channel, Bassin and CKPool versions, hardware, browser, and relevant redacted logs. Device emulation tests do not replace testing on the actual device: the maintainer has tested the redesigned app through the community store on a CMRat with Raspberry Pi CM5, on an earlier release. No physical umbrelOS install, update, restart, or persistence test is reported for 2.1.12-patch.1.
+Start with the [FAQ](FAQ.md) and [Settings and notifications](settings.md). For an issue report, include the release channel, Bassin and CKPool versions, hardware, browser, and relevant redacted logs. Device emulation tests do not replace testing on the actual device: the maintainer has tested the redesigned app through the community store on a CMRat with Raspberry Pi CM5, on an earlier release. No physical umbrelOS install, update, restart, or persistence test is reported for 2.1.14.
 
 ## Interrupted first setup
 
