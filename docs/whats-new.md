@@ -2,7 +2,17 @@
 
 [Back to Bassin](../README.md)
 
-This guide covers the changes now available in the community release through **2.1.15**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+This guide covers the changes now available in the community release through **2.1.16**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+
+## 2.1.16 — 22 November 2026 (Low-RAM 2-Container Stack & Built-In Worker Leaderboard Widgets)
+
+- **Stack-wide RAM reduction:** eliminates the separate `widget-server` Bun container (~50 MB RAM saved — Bassin now runs just `ckpool` + `ui`, down from 4 containers in 2.1.14), caps glibc multi-thread arena overhead on `ckpool` (`MALLOC_ARENA_MAX=2`), runs `bassin-server.py` with `python3 -O -B`, 256 KiB thread stacks (32× smaller than Linux's 8 MiB default), and 15-second keep-alive timeouts, and splits the frontend with `React.lazy` so opening Settings (51 kB) or Insights never loads Three.js.
+- **Three built-in umbrelOS dashboard widgets** served directly from local disk in `ui:8080`:
+  - **Pool Overview** (`/widgets/pool`): scientific-notation hashrate normalization, `P`/`E` difficulty units, and stale-status protection.
+  - **Worker Best Diff Leaderboard** (`/widgets/workers`): ranks workers by all-time best share difficulty found ever (`bestever`) with live 5m hashrate (or `Idle`).
+  - **Hashrate Averages** (`/widgets/hashrate`): `1m`, `5m`, `1h`, and `24h` pool averages.
+- **SonarCloud A / 0 open issues** across `bassin-ui`, `docker-ckpool-solo`, `umbrel-bassin-widget` (also upgraded to v2.0.0 for standalone users), and the community app store.
+- UI build [`e691554`](https://github.com/blockdyor/bassin-ui/actions/runs/45065081886), CKPool build [`v1.2.0-2`](https://github.com/blockdyor/docker-ckpool-solo/actions/runs/45047644486).
 
 ## 2.1.15 — 22 November 2026 (Live Auto-Saving Settings & Automatic CKPool Reload)
 
@@ -83,4 +93,4 @@ Standard JSON-RPC + ZMQ remains the default so both **Bitcoin Core** and **Bitco
 
 ## Official and community releases
 
-The current community release (2.1.15) is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 22 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.15 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.
+The current community release (2.1.16) is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 22 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.16 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.

@@ -8,7 +8,7 @@ Run a Bitcoin solo mining pool on your Umbrel. Your node supplies the block temp
 
 Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard based on the [Umbrel Bitcoin UI](https://github.com/getumbrel/umbrel-bitcoin/tree/master/apps/ui). Open Home to see your pool’s hashrate, or use Insights to check an individual worker.
 
-**Current community release: package 2.1.15 (Bassin UI 2.1.15) with CKPool `v1.2.0-2` (upstream `be3e1e07` with Stratum V2, live auto-saving Settings, and automatic CKPool reload).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 22 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.15.
+**Current community release: package 2.1.16 (Bassin UI 2.1.16) with CKPool `v1.2.0-2` (2-container low-RAM architecture, built-in umbrelOS widgets including Worker Best Diff Leaderboard, Stratum V2, and live auto-saving Settings).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 22 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.16.
 
 ![Bassin gallery: mining with your own Bitcoin node](docs/gallery/01-decentralization.jpg)
 
@@ -30,7 +30,7 @@ These features describe the community dashboard. The official store’s 2.1.4 da
 - **UTC throughout:** a UTC clock in Insights, UTC chart and worker timestamps, and the original UTC pool logs.
 - **Version visibility:** the header shows the Bassin version and detects the installed CKPool version when metadata is available.
 - **Mobile improvements:** responsive layouts, readable chart tooltips, reduced graphics load on touch devices, and a static globe fallback if graphics are interrupted.
-- **Umbrel widget:** pool statistics on your umbrelOS dashboard.
+- **Umbrel widgets & low RAM:** three built-in umbrelOS dashboard widgets (**Pool Overview**, **Worker Best Diff Leaderboard** ranking workers by all-time best share difficulty, and **Hashrate Averages**) served directly from the UI container — eliminating separate `www` and `widget-server` containers alongside `MALLOC_ARENA_MAX=2`, 256 KiB thread stacks, and lazy-loaded UI chunks.
 
 **Settings saves directly to your running `ckpool.conf` and reloads CKPool automatically.** Umbrel’s built-in proxy authentication protects the dashboard; Import and Download remain available for backups. See [Settings and notifications](docs/settings.md) for details.
 

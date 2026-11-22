@@ -4,7 +4,7 @@
 
 ## Which version does this documentation cover?
 
-The redesigned community release, Bassin package 2.1.15 (UI 2.1.15) with CKPool `v1.2.0-2` (upstream `be3e1e07`, live auto-saving Settings, automatic CKPool reload, Stratum V2 & optional Mining IPC). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
+The redesigned community release, Bassin package 2.1.16 (UI 2.1.16) with CKPool `v1.2.0-2` (2-container low-RAM stack, built-in umbrelOS widgets including Worker Best Diff Leaderboard, live auto-saving Settings, automatic CKPool reload, Stratum V2 & optional Mining IPC). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
 
 ## What do I need, and what credentials go in my miner?
 
@@ -94,9 +94,12 @@ The UI does not currently provide a dedicated block-found alert. Inspect the poo
 
 The current community template adds `/mined by Bassin on Umbrel/` to the coinbase. Older installations or customized configurations can use another signature; check `btcsig` in the active configuration. A signature is a useful identifier, not proof of who mined a block.
 
-## Can I add the Umbrel dashboard widget?
+## Can I add Umbrel dashboard widgets?
 
-Yes. Add Bassin’s statistics widget from the umbrelOS dashboard. Its data comes from the same pool statistics used by Bassin.
+Yes — starting in **2.1.16**, Bassin provides three built-in umbrelOS dashboard widgets served directly by the UI container (no separate widget container needed):
+- **Pool Overview** (`four-stats`): 5-minute hashrate, active workers, round best share, and total shares.
+- **Worker Best Diff Leaderboard** (`list`): ranks your workers by all-time best share difficulty (`bestever`) alongside live 5-minute hashrate.
+- **Hashrate Averages** (`four-stats`): 1m, 5m, 1h, and 24h pool hashrates.
 
 ## Is the terminal dashboard still available?
 
