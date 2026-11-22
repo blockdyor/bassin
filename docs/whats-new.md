@@ -10,7 +10,7 @@ This guide covers the changes now available in the community release through **2
 - **Automatic CKPool reload:** CKPool’s startup supervisor watches `/config/ckpool.conf` for changes and gracefully reloads CKPool (`SIGTERM`) within seconds, automatically publishing any newly generated Stratum V2 authority public key to **Connect → Stratum V2**.
 - **Server-side credential protection & Umbrel auth:** Stored Bitcoin RPC passwords are redacted on read and preserved automatically on save (eliminating the false “Bitcoin node 1 needs host:port, RPC username, and RPC password” error when toggling Stratum V2). Umbrel’s built-in `app_proxy` authentication is now enabled to protect the live dashboard and configuration API, while private SV2 Noise keys remain isolated in `data/sv2/` (never mounted in `ui`).
 - **Clearer Bitcoin node wording:** Clarifies compatibility with both **Bitcoin Core** and **Bitcoin Knots** (including 29.3 and earlier versions) over standard JSON-RPC + ZMQ.
-- Community package commit [`d1e9510`](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/commit/d1e9510), UI build [`26117d4`](https://github.com/blockdyor/bassin-ui/actions/runs/45056606663), CKPool build [`v1.2.0-2`](https://github.com/blockdyor/docker-ckpool-solo/actions/runs/45047644486).
+- Community package commit [`d1e9510`](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/commit/d1e9510), UI build [`292838b`](https://github.com/blockdyor/bassin-ui/actions/runs/45062074098) (SonarCloud Quality Gate A / 0 issues), CKPool build [`v1.2.0-2`](https://github.com/blockdyor/docker-ckpool-solo/actions/runs/45047644486).
 
 ## 2.1.14 — 22 November 2026 (Stratum V2, CKPool `v1.2.0-2`, Full Settings)
 
