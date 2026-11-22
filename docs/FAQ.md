@@ -4,20 +4,20 @@
 
 ## Which version does this documentation cover?
 
-The redesigned community release, Bassin package 2.1.14 (UI 2.1.14) with CKPool `v1.2.0-2` (upstream `be3e1e07`, Stratum V2 & optional Mining IPC). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
+The redesigned community release, Bassin package 2.1.15 (UI 2.1.15) with CKPool `v1.2.0-2` (upstream `be3e1e07`, live auto-saving Settings, automatic CKPool reload, Stratum V2 & optional Mining IPC). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
 
 ## What do I need, and what credentials go in my miner?
 
-A running, fully synchronized Bitcoin node (**Bitcoin Core** or **Bitcoin Knots 29.3+**) and a Stratum V1 or Stratum V2 miner. The standard Umbrel package connects to Umbrel’s Bitcoin node for you over JSON-RPC and ZMQ.
+A running, fully synchronized Bitcoin node (**Bitcoin Core** or **Bitcoin Knots**) and a Stratum V1 or Stratum V2 miner. The standard Umbrel package connects to Umbrel’s Bitcoin node for you over JSON-RPC and ZMQ.
 
 - **Stratum V1:** `stratum+tcp://<your-Umbrel-address>:3456`, username `<your-bitcoin-address>.<worker-name>`, password `x`.
 - **Stratum V2 (Noise-encrypted):** `stratum2+tcp://<your-Umbrel-address>:3457/<authority-pubkey>` (available with QR code in **Connect → Stratum V2**), `user_identity` `<your-bitcoin-address>.<worker-name>`.
 
 Use a receiving address from your own wallet, not the literal word `user`. The first dot or underscore ends the payout address; append `.rig1` or `.rig2` to distinguish miners paid to that same address. The miner password is separate from the Bitcoin node’s private RPC password. See [Getting started](getting-started.md).
 
-## Does Bassin 2.1.14 work with Bitcoin Knots 29.3?
+## Does Bassin work with Bitcoin Knots (29.3 and earlier)?
 
-Yes. Standard solo mining — both **Stratum V1** (`3456`) and **Stratum V2** (`3457`) — uses standard JSON-RPC + ZeroMQ (`zmqpubhashblock`) and works out of the box with **Bitcoin Knots 29.3+** as well as all recent Bitcoin Core versions. Umbrel’s Bitcoin Knots app satisfies Bassin’s `bitcoin` dependency automatically. Only the opt-in **Mining IPC** (`ipcmining`) and **Stratum V2 Job Declaration** (`sv2jdurl`) template validation require Bitcoin Core v32.x.
+Yes. Standard solo mining — both **Stratum V1** (`3456`) and **Stratum V2** (`3457`) — uses standard JSON-RPC + ZeroMQ (`zmqpubhashblock`) and works out of the box with **Bitcoin Knots** (including 29.3 and earlier versions) as well as **Bitcoin Core**. Umbrel’s Bitcoin Knots app satisfies Bassin’s `bitcoin` dependency automatically. Only the opt-in **Mining IPC** (`ipcmining`) and **Stratum V2 Job Declaration** (`sv2jdurl`) template validation require Bitcoin Core v32.x.
 
 ## Is there a pool fee, and who receives a found block?
 
@@ -27,9 +27,9 @@ Bassin’s standard solo configuration charges no pool commission. The successfu
 
 The UI was refactored from the actual Umbrel Bitcoin UI components, not just given similar colours. It retains Bassin’s water palette while adopting the familiar layout, typography, dock, cards, charts, dialogs, and globe. This gives the app a consistent Umbrel feel and a stronger foundation for additional mining features. See [What’s new](whats-new.md).
 
-## Why do Settings show different values from my pool?
+## Do Settings changes apply automatically?
 
-The settings form initially contains a starter template. It does not read your running configuration. Import the active `data/config/ckpool.conf` to edit the values your pool uses. The UI cannot apply or restart the pool automatically. Follow the [configuration workflow](settings.md#apply-an-intentional-change).
+Yes, starting in **2.1.15**. Settings loads your running `data/config/ckpool.conf` automatically (keeping stored Bitcoin RPC passwords safely redacted on the server), auto-saves valid changes, and reloads CKPool within seconds. You no longer need to import, export, or manually restart Bassin to toggle Stratum V2 or tune mining options. See the [settings guide](settings.md#live-auto-save--automatic-ckpool-reload).
 
 ## Do I need to change block notifications after updating?
 
@@ -45,7 +45,7 @@ No. In CKPool’s JSON, `btcd` is the list of Bitcoin node connections, `[0]` se
 
 Yes — starting in **Bassin 2.1.14** (`docker-ckpool-solo:v1.2.0-2`), CKPool is compiled with both **Noise-encrypted Stratum V2** (`--enable-sv2`) and optional **Cap’n Proto Mining IPC**:
 
-- **Stratum V2 Mining** (`3457` → container `3336`) works over standard JSON-RPC + ZMQ with both Bitcoin Core and Bitcoin Knots 29.3+. Fresh installs enable it by default with persistent private Noise keys stored in `data/sv2/`. Existing installs can enable it in **Settings → Stratum V2**.
+- **Stratum V2 Mining** (`3457` → container `3336`) works over standard JSON-RPC + ZMQ with both Bitcoin Core and Bitcoin Knots. Fresh installs enable it by default with persistent private Noise keys stored in `data/sv2/`. Existing installs can toggle it on directly in **Settings → Stratum V2** — changes save and reload CKPool automatically.
 - **Mining IPC (`ipcmining`)** and **Stratum V2 Job Declaration (`sv2jdurl`, port `3458`)** are strictly opt-in and inactive unless configured in Settings. Using them requires Bitcoin Core v32.x with `-ipcbind`. See [Stratum V2 and Mining IPC](settings.md#stratum-v2-and-noise-keys).
 
 ## What are Round Best Share and Best Share Ever?

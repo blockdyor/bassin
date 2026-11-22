@@ -8,7 +8,7 @@ Run a Bitcoin solo mining pool on your Umbrel. Your node supplies the block temp
 
 Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard based on the [Umbrel Bitcoin UI](https://github.com/getumbrel/umbrel-bitcoin/tree/master/apps/ui). Open Home to see your pool’s hashrate, or use Insights to check an individual worker.
 
-**Current community release: package 2.1.14 (Bassin UI 2.1.14) with CKPool `v1.2.0-2` (upstream `be3e1e07` with Stratum V2 & optional Mining IPC).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 22 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.14.
+**Current community release: package 2.1.15 (Bassin UI 2.1.15) with CKPool `v1.2.0-2` (upstream `be3e1e07` with Stratum V2, live auto-saving Settings, and automatic CKPool reload).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 22 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.15.
 
 ![Bassin gallery: mining with your own Bitcoin node](docs/gallery/01-decentralization.jpg)
 
@@ -23,20 +23,20 @@ These features describe the community dashboard. The official store’s 2.1.4 da
 - **Home:** interactive globe, accepted/rejected share quality, and animated hashrate averages from one minute to seven days.
 - **Insights:** workers, round best share, best share ever, share rate, uptime, a hashrate chart, live **Stratum V2 & Job Declaration** telemetry, and searchable worker details.
 - **Stratum V2 (Noise-encrypted):** built-in Stratum V2 mining (`3457`) and optional Job Declaration (`3458`) alongside Stratum V1 (`3456`), with persistent private Noise keys stored in `data/sv2/` and live authority public-key discovery in **Connect → Stratum V2**.
-- **Settings:** dedicated **Mining**, **Stratum V2**, **Bitcoin Node**, **Advanced**, and **Logs** tabs covering difficulty, coinbase signature, donation, version rolling mask, idle timeout, SV2 listeners & key paths, Bitcoin RPC/ZMQ/polling, optional Bitcoin Core v32.x Mining IPC, extranonce lengths, connection limits, and an advanced JSON editor.
+- **Settings (live auto-save):** dedicated **Mining**, **Stratum V2**, **Bitcoin Node**, **Advanced**, and **Logs** tabs that load your running `ckpool.conf` automatically (with stored RPC passwords safely redacted on the server), auto-save valid changes, and reload CKPool within seconds — no manual export or container restart required.
 - **Logs:** searchable pool logs with pause, follow, and download controls.
 - **Worker setup:** Stratum V1 and Noise-encrypted Stratum V2 connection details with QR codes. The default solo configuration pays the successful miner’s Bitcoin address the full block subsidy and transaction fees, with no pool commission.
-- **Bitcoin Core & Bitcoin Knots 29.3+ compatible:** standard solo mining (both Stratum V1 and Stratum V2) uses JSON-RPC + ZMQ and works out of the box with both Bitcoin Core and Bitcoin Knots 29.3+.
+- **Bitcoin Core & Bitcoin Knots compatible:** standard solo mining (both Stratum V1 and Stratum V2) uses JSON-RPC + ZMQ and works out of the box with both Bitcoin Core and Bitcoin Knots (including 29.3 and earlier versions).
 - **UTC throughout:** a UTC clock in Insights, UTC chart and worker timestamps, and the original UTC pool logs.
 - **Version visibility:** the header shows the Bassin version and detects the installed CKPool version when metadata is available.
 - **Mobile improvements:** responsive layouts, readable chart tooltips, reduced graphics load on touch devices, and a static globe fallback if graphics are interrupted.
 - **Umbrel widget:** pool statistics on your umbrelOS dashboard.
 
-**Settings currently imports, edits, and exports a configuration file. It does not load or apply the running pool configuration.** Import your existing `ckpool.conf` before editing; see [Settings and notifications](docs/settings.md) for the complete workflow.
+**Settings saves directly to your running `ckpool.conf` and reloads CKPool automatically.** Umbrel’s built-in proxy authentication protects the dashboard; Import and Download remain available for backups. See [Settings and notifications](docs/settings.md) for details.
 
 ## Install and connect
 
-1. Run a fully synchronized Bitcoin node on Umbrel (Bitcoin Core or Bitcoin Knots 29.3+).
+1. Run a fully synchronized Bitcoin node on Umbrel (Bitcoin Core or Bitcoin Knots).
 2. For the current community release, open **App Store → Community App Stores** on your Umbrel and add the following store URL (not this documentation repository):
 
    ```text
@@ -54,7 +54,7 @@ These features describe the community dashboard. The official store’s 2.1.4 da
 
 Copy the pool’s Base58Check authority public key (or scan its QR code) directly from **Connect → Stratum V2**. Use a receiving address from your own Bitcoin wallet. The address before the dot selects the payout; the suffix identifies the miner. An address alone also works. Never enter a wallet seed or private key. Solo mining does not provide regular payouts for submitted shares.
 
-The [official Umbrel App Store listing](https://apps.umbrel.com/app/bassin) is also available, on its own release schedule. Read the [installation guide](docs/getting-started.md) before switching channels: the apps have different IDs and data directories, and both use Stratum port `3456` (community 2.1.14 also binds `3457` and `3458` for Stratum V2).
+The [official Umbrel App Store listing](https://apps.umbrel.com/app/bassin) is also available, on its own release schedule. Read the [installation guide](docs/getting-started.md) before switching channels: the apps have different IDs and data directories, and both use Stratum port `3456` (community 2.1.15 also binds `3457` and `3458` for Stratum V2).
 
 ## Documentation
 
@@ -81,11 +81,12 @@ The `duckaxe-bassin/` directory and `umbrel-app-store.yml` in this repository ar
 
 ```mermaid
 flowchart LR
-  M[Miners] -->|Stratum| P[CKPool solo]
+  M[Miners] -->|Stratum V1/V2| P[CKPool solo]
   P -->|RPC| B[Bitcoin node]
   B -->|ZMQ block notifications| P
   P -->|Statistics and logs| F[Shared data files]
-  F --> S[Static web server]
+  F --> S[Bassin UI server]
+  S -->|Auto-save config| P
   S --> U[Bassin UI]
   S --> W[Umbrel widget]
 ```

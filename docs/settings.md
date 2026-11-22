@@ -2,28 +2,25 @@
 
 [Back to Bassin](../README.md)
 
-These instructions describe community release 2.1.14. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and optional Mining IPC controls, and **Mining** / **Advanced** for full CKPool tuning.
+These instructions describe community release 2.1.15. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and optional Mining IPC controls, and **Mining** / **Advanced** for full CKPool tuning.
 
-## What the editor does
+## Live auto-save & automatic CKPool reload
 
-Settings is a local **import → edit → download** configuration editor. It does not read the running pool configuration, test the node connection, save changes to the server, or restart the pool.
+Starting in **2.1.15**, Settings connects directly to your running `data/config/ckpool.conf`:
 
-Before importing a file, the form shows a starter template. Its values are not evidence of what your running pool is using. Downloading a file does not apply it.
+- **Auto-loaded on open:** Settings reads your running `ckpool.conf` automatically. Stored Bitcoin RPC passwords stay on the server (masked in the browser) and are preserved automatically when you save other settings — you never have to re-enter your RPC password just to toggle Stratum V2 or adjust difficulty.
+- **Auto-save on edit:** Whenever you toggle Stratum V2 or make any valid edit, Bassin validates the configuration and atomically saves `/config/ckpool.conf` (`0600`).
+- **Automatic CKPool reload:** CKPool’s startup supervisor watches `/config/ckpool.conf` for changes, gracefully stops CKPool (`SIGTERM`), and restarts it with the new configuration within seconds. Newly enabled Stratum V2 authority keys appear automatically in **Connect → Stratum V2**.
+- **Protected access:** Umbrel’s built-in proxy authentication protects the web UI and its `/api/config` endpoint; private Stratum V2 Noise keys in `data/sv2/` are never mounted in the UI container.
+- **Backup & Restore:** **Import config** and **Download config** remain available for backing up or restoring configurations (imported valid configs auto-save immediately; downloaded backups omit server-stored RPC passwords unless you explicitly type one).
 
-Credentials remain in browser-tab memory and in the file you explicitly download. Moving between app screens keeps pending edits; reloading the app clears them. Imported additional nodes and unknown options are preserved. Use **Advanced** to edit the full JSON, including additional nodes.
+## Manual backup or offline editing
 
-## Apply an intentional change
+If you prefer to back up `data/config/ckpool.conf` manually (or are running the UI in a static preview without the live server):
 
-1. Locate and back up the actual `data/config/ckpool.conf` in your Bassin app’s data directory. Keep the backup private.
-2. Import that file into Settings. Review the values before editing.
-3. Make your changes and resolve validation errors, then select **Download config**.
-4. Stop Bassin through Umbrel before replacing its active configuration. This temporarily interrupts mining through the pool.
-5. Replace `data/config/ckpool.conf` with the downloaded file, preserving its ownership and permissions so the pool’s UID/GID `1000:1000` can read it.
-6. Start Bassin and check **Settings → Logs** and your miners for successful reconnection. If the change fails, stop the app and restore the backup.
-
-For an existing current community installation, edit the active `.conf` file, not just `ckpool.conf.template`: the template is only used when the active file is missing. Older or custom packages can have different startup behaviour; inspect their deployment before applying these instructions.
-
-Never put configuration or backup files in `data/www`; that directory is web-served. The downloaded configuration contains your RPC password.
+1. Back up `data/config/ckpool.conf` privately outside `data/www`.
+2. Use **Import config** to load a saved file, or **Download config** to export a backup.
+3. Never put configuration or backup files in `data/www`.
 
 ## Bitcoin Core connection
 
@@ -57,7 +54,7 @@ Open **Settings → Stratum V2** to configure Noise-encrypted Stratum V2:
 
 | Setting | Key | Meaning |
 | --- | --- | --- |
-| **Enable Stratum V2 Mining** | `sv2url` | Bind address(es) for SV2 Mining clients (container default `0.0.0.0:3336`, published on host port `3457`). Works over standard JSON-RPC + ZMQ with both Bitcoin Core and Bitcoin Knots 29.3+. |
+| **Enable Stratum V2 Mining** | `sv2url` | Bind address(es) for SV2 Mining clients (container default `0.0.0.0:3336`, published on host port `3457`). Works over standard JSON-RPC + ZMQ with both Bitcoin Core and Bitcoin Knots. |
 | **Enable Job Declaration (JDS)** | `sv2jdurl` | Bind address(es) for SV2 Job Declaration clients (container default `0.0.0.0:3337`, published on host port `3458`). Validating declared block templates requires Bitcoin Core v32.x Mining IPC (`ipcmining`); without IPC, CKPool rejects declared jobs fail-closed while standard SV2 mining continues normally. |
 | **Authority Key Path** | `sv2_authority_key` | Private secp256k1 Noise CA key path. Use `/sv2/sv2_authority.key` so the authority public key survives container restarts. |
 | **Static Server Key Path** | `sv2_static_key` | Private server Noise static key path. Use `/sv2/sv2_static.key`. |
@@ -80,11 +77,11 @@ CKPool creates missing Noise keys automatically on first start. Never place priv
 - **Connection Limits:** `maxclients`, `maxusers`, `maxsubclients` (`-1` = unlimited, default `65536`), `maxsendqueue` (bytes), and **Allow Client Reconnect** (`reconnect`, default enabled).
 - **Custom Configuration:** full raw JSON editor that preserves additional nodes and custom CKPool options.
 
-## CKPool v1.2.0-2, Bitcoin Knots 29.3, and Mining IPC
+## CKPool v1.2.0-2, Bitcoin Core / Knots, and Mining IPC
 
 The `blockdyor/docker-ckpool-solo:v1.2.0-2` image (upstream commit `be3e1e07` with pinned `secp256k1` `ebf59432`) compiles in **ZeroMQ**, **Stratum V2 (`--enable-sv2`)**, and optional **Cap’n Proto Mining IPC**.
 
-- **Bitcoin Knots 29.3 and older Bitcoin Core versions:** Leave **Mining IPC Socket (`ipcmining`)** blank in **Settings → Bitcoin Node**. CKPool uses standard JSON-RPC + ZMQ and never opens an IPC socket, so both Stratum V1 and Stratum V2 solo mining work out of the box.
+- **Bitcoin Knots (including 29.3 and earlier) and standard Bitcoin Core nodes:** Leave **Mining IPC Socket (`ipcmining`)** blank in **Settings → Bitcoin Node**. CKPool uses standard JSON-RPC + ZMQ and never opens an IPC socket, so both Stratum V1 and Stratum V2 solo mining work out of the box.
 - **Bitcoin Core v32.x Mining IPC (opt-in):** Set `ipcmining` to a mounted Unix socket from `bitcoind -ipcbind` if you want IPC template/block notifications or Stratum V2 Job Declaration (`sv2jdurl`).
 
 The [pinned upstream configuration reference](https://bitbucket.org/ckolivas/ckpool/src/be3e1e0796fbea60b7792a9b62fc2614764e1fc0/README.md) and [container build](https://github.com/blockdyor/docker-ckpool-solo/blob/v1.2.0-2/Dockerfile) describe the underlying options and compiled capabilities.

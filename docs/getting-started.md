@@ -8,14 +8,14 @@ As of 22 November 2026:
 
 | Channel | Version | App ID | Web port | Stratum ports |
 | --- | --- | --- | --- | --- |
-| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Package 2.1.14 / UI 2.1.14 / CKPool `v1.2.0-2` (`be3e1e07`) | `blockdyor-bassin` | `5009` | `3456` (SV1), `3457` (SV2), `3458` (SV2 JD) |
-| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.14 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` (2.1.14 adds `3457`, `3458`) |
+| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Package 2.1.15 / UI 2.1.15 / CKPool `v1.2.0-2` (`be3e1e07`) | `blockdyor-bassin` | `5009` | `3456` (SV1), `3457` (SV2), `3458` (SV2 JD) |
+| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.15 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` (2.1.15 adds `3457`, `3458`) |
 
 The linked store manifests are the source of truth for later releases. The `duckaxe-bassin` package retained in the main project repository is legacy packaging, not the current community installation source.
 
 ## Install the community release
 
-1. Make sure Umbrel’s Bitcoin node is fully synchronized and running (either **Bitcoin Core** or **Bitcoin Knots 29.3+** works out of the box via JSON-RPC + ZMQ).
+1. Make sure Umbrel’s Bitcoin node is fully synchronized and running (both **Bitcoin Core** and **Bitcoin Knots**, including 29.3 and earlier versions, work out of the box via JSON-RPC + ZMQ).
 2. On your Umbrel, open **App Store → Community App Stores** and add `https://github.com/blockdyor/blockdyor-umbrel-community-app-store`. Use the store root, not this documentation repository or its legacy `duckaxe-bassin` directory.
 3. Install Bassin from the added store.
 4. Open the app from Umbrel and select **Connect → Stratum** (V1), **Connect → Stratum V2**, or **Connect → Worker Setup**.
@@ -35,7 +35,7 @@ Use the update offered by the store from which you installed Bassin. After updat
 
 If you use a public Bitcoin RPC endpoint for the globe marker, configure HTTPS for the location helper. The standard private Umbrel connection needs no change.
 
-The current community package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. Fresh installs enable Stratum V2 mining out of the box with persistent Noise keys in `data/sv2/`. Existing installations keep their `ckpool.conf` untouched and can enable Stratum V2 in **Settings → Stratum V2**; the [settings guide](settings.md) explains how to apply an intentional configuration change.
+The current community package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. Fresh installs enable Stratum V2 mining out of the box with persistent Noise keys in `data/sv2/`. Existing installations keep their `ckpool.conf` untouched and can toggle Stratum V2 on directly in **Settings → Stratum V2** — valid changes auto-save and reload CKPool automatically. See the [settings guide](settings.md).
 
 ## Switching between official and community installations
 
@@ -55,16 +55,16 @@ Under Umbrel’s data root, use `app-data/blockdyor-bassin/` for the community a
 | --- | --- |
 | `data/config/ckpool.conf` | Active pool configuration, including private RPC credentials |
 | `data/config/ckpool.conf.template` | First-install template |
-| `data/sv2/` | Private persistent Stratum V2 Noise keys (`sv2_authority.key`, `sv2_static.key`), chmod `0700`, never served by `www` |
+| `data/sv2/` | Private persistent Stratum V2 Noise keys (`sv2_authority.key`, `sv2_static.key`), chmod `0700`, mounted only in CKPool (never in the UI container) |
 | `data/www/pool/` | Pool statistics and published metadata (`pool.status`, `version.json`, `location.json`, `sv2.json`) |
 | `data/www/users/` | Retained user and worker statistics |
 | `data/www/ckpool.log` | Pool log |
 
-Keep configuration files, `data/sv2/` keys, and backups out of `data/www`: the web server serves that directory, and the standard package disables Umbrel’s proxy authentication for it. Keep the dashboard on a trusted network. Logs and user records can reveal payout addresses and worker names; redact those and RPC credentials before sharing diagnostics.
+Starting in 2.1.15, Umbrel’s built-in proxy authentication protects the Bassin dashboard and its live configuration API. Keep configuration backups and `data/sv2/` keys out of `data/www`. Logs and user records can reveal payout addresses and worker names; redact those and RPC credentials before sharing diagnostics.
 
 ## Need help?
 
-Start with the [FAQ](FAQ.md) and [Settings and notifications](settings.md). For an issue report, include the release channel, Bassin and CKPool versions, hardware, browser, and relevant redacted logs. Device emulation tests do not replace testing on the actual device: the maintainer has tested the redesigned app through the community store on a CMRat with Raspberry Pi CM5, on an earlier release. No physical umbrelOS install, update, restart, or persistence test is reported for 2.1.14.
+Start with the [FAQ](FAQ.md) and [Settings and notifications](settings.md). For an issue report, include the release channel, Bassin and CKPool versions, hardware, browser, and relevant redacted logs. Device emulation tests do not replace testing on the actual device: the maintainer has tested the redesigned app through the community store on a CMRat with Raspberry Pi CM5, on an earlier release. No physical umbrelOS install, update, restart, or persistence test is reported for 2.1.15.
 
 ## Interrupted first setup
 
