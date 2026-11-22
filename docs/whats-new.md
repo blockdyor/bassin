@@ -2,7 +2,15 @@
 
 [Back to Bassin](../README.md)
 
-This guide covers the changes now available in the community release through **2.1.16**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+This guide covers the changes now available in the community release through **2.1.17**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+
+## 2.1.17 — 22 November 2026 (Bitcoin Core v32+ IPC Mining & Config API Hardening)
+
+- **Native Bitcoin Core v32+ IPC mining support:** Mounts `${APP_BITCOIN_DATA_DIR}:/bitcoin:ro` read-only on `ckpool` (never on `ui`), configures `"ipcmining": "/bitcoin/${APP_BITCOIN_IPC_SOCKET_RELATIVE_PATH:-node.sock}"` on fresh installs while preserving `btcd` RPC + `zmqblock` fallback, and waits up to 30 seconds at startup **only when `APP_BITCOIN_IPC_ENABLED=true`** so `node.sock` is ready before CKPool's startup check (zero startup delay on Bitcoin Knots or non-IPC nodes).
+- **Intra-Docker-network Config API authentication:** Requires a Bearer token (`BASSIN_CONFIG_TOKEN` backed by Umbrel's deterministic `APP_PASSWORD`) on `GET` and `PUT /api/config` (failing closed if unset), so other containers on Umbrel's Docker network cannot read or modify `ckpool.conf`. Logs stay accessible without unlocking Settings.
+- **Strict Config API key allowlist & path confinement:** Blocks modifying `donation`, `btcaddress`, `logdir`, `proxy`, `redirecturl`, and any non-allowlisted key through the API, confines SV2 key paths to `/sv2/`, and confines `ipcmining` to `/bitcoin/` or `/run/bitcoind/`.
+- **Explicit Save & gated CKPool reload (rental-safe):** Replaces debounced auto-save and 2-second `ckpool.conf` polling with explicit **Save** (writes config without restarting CKPool) and **Save & Restart Pool** (confirms when active workers are connected and writes `/config/.reload-trigger` so CKPool only restarts intentionally).
+- UI build [`14967e5`](https://github.com/blockdyor/bassin-ui/actions/runs/45068365297) (SonarCloud Quality Gate A / 0 issues), CKPool build [`v1.2.0-2`](https://github.com/blockdyor/docker-ckpool-solo/actions/runs/45047644486).
 
 ## 2.1.16 — 22 November 2026 (Low-RAM 2-Container Stack & Built-In Worker Leaderboard Widgets)
 
@@ -93,4 +101,4 @@ Standard JSON-RPC + ZMQ remains the default so both **Bitcoin Core** and **Bitco
 
 ## Official and community releases
 
-The current community release (2.1.16) is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 22 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.16 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.
+The current community release (2.1.17) is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 22 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.17 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.

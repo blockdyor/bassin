@@ -8,7 +8,7 @@ Run a Bitcoin solo mining pool on your Umbrel. Your node supplies the block temp
 
 Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard based on the [Umbrel Bitcoin UI](https://github.com/getumbrel/umbrel-bitcoin/tree/master/apps/ui). Open Home to see your pool’s hashrate, or use Insights to check an individual worker.
 
-**Current community release: package 2.1.16 (Bassin UI 2.1.16) with CKPool `v1.2.0-2` (2-container low-RAM architecture, built-in umbrelOS widgets including Worker Best Diff Leaderboard, Stratum V2, and live auto-saving Settings).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 22 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.16.
+**Current community release: package 2.1.17 (Bassin UI 2.1.17) with CKPool `v1.2.0-2` (Bitcoin Core v32+ IPC mining with RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, 2-container low-RAM architecture, and built-in Worker Best Diff Leaderboard widget).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 22 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.17.
 
 ![Bassin gallery: mining with your own Bitcoin node](docs/gallery/01-decentralization.jpg)
 
@@ -23,16 +23,16 @@ These features describe the community dashboard. The official store’s 2.1.4 da
 - **Home:** interactive globe, accepted/rejected share quality, and animated hashrate averages from one minute to seven days.
 - **Insights:** workers, round best share, best share ever, share rate, uptime, a hashrate chart, live **Stratum V2 & Job Declaration** telemetry, and searchable worker details.
 - **Stratum V2 (Noise-encrypted):** built-in Stratum V2 mining (`3457`) and optional Job Declaration (`3458`) alongside Stratum V1 (`3456`), with persistent private Noise keys stored in `data/sv2/` and live authority public-key discovery in **Connect → Stratum V2**.
-- **Settings (live auto-save):** dedicated **Mining**, **Stratum V2**, **Bitcoin Node**, **Advanced**, and **Logs** tabs that load your running `ckpool.conf` automatically (with stored RPC passwords safely redacted on the server), auto-save valid changes, and reload CKPool within seconds — no manual export or container restart required.
-- **Logs:** searchable pool logs with pause, follow, and download controls.
+- **Settings (hardened live editor):** dedicated **Mining**, **Stratum V2**, **Bitcoin Node**, **Advanced**, and **Logs** tabs backed by a Bearer-authenticated Config API (`BASSIN_CONFIG_TOKEN` / Umbrel deterministic app password) and strict key allowlist (blocking `donation`, `btcaddress`, `logdir`, `proxy`, and `redirecturl`). Explicit **Save** (writes without kicking miners/rentals) and **Save & Restart Pool** (gated reload with active-worker confirmation).
+- **Logs:** searchable pool logs with pause, follow, and download controls (accessible without unlocking Settings).
 - **Worker setup:** Stratum V1 and Noise-encrypted Stratum V2 connection details with QR codes. The default solo configuration pays the successful miner’s Bitcoin address the full block subsidy and transaction fees, with no pool commission.
-- **Bitcoin Core & Bitcoin Knots compatible:** standard solo mining (both Stratum V1 and Stratum V2) uses JSON-RPC + ZMQ and works out of the box with both Bitcoin Core and Bitcoin Knots (including 29.3 and earlier versions).
+- **Bitcoin Core IPC & Bitcoin Knots compatible:** mounts `${APP_BITCOIN_DATA_DIR}:/bitcoin:ro` on `ckpool` so Bitcoin Core v32+ users with Umbrel’s **IPC Mining Interface** enabled get native Cap’n Proto IPC (`/bitcoin/node.sock`) automatically, while keeping full JSON-RPC + ZMQ fallback for Bitcoin Knots (29.3 and earlier) and non-IPC Bitcoin Core nodes.
 - **UTC throughout:** a UTC clock in Insights, UTC chart and worker timestamps, and the original UTC pool logs.
 - **Version visibility:** the header shows the Bassin version and detects the installed CKPool version when metadata is available.
 - **Mobile improvements:** responsive layouts, readable chart tooltips, reduced graphics load on touch devices, and a static globe fallback if graphics are interrupted.
 - **Umbrel widgets & low RAM:** three built-in umbrelOS dashboard widgets (**Pool Overview**, **Worker Best Diff Leaderboard** ranking workers by all-time best share difficulty, and **Hashrate Averages**) served directly from the UI container — eliminating separate `www` and `widget-server` containers alongside `MALLOC_ARENA_MAX=2`, 256 KiB thread stacks, and lazy-loaded UI chunks.
 
-**Settings saves directly to your running `ckpool.conf` and reloads CKPool automatically.** Umbrel’s built-in proxy authentication protects the dashboard; Import and Download remain available for backups. See [Settings and notifications](docs/settings.md) for details.
+**Settings requires your Bassin app password (shown in Umbrel) and saves only when you click Save or Save & Restart Pool.** See [Settings and notifications](docs/settings.md) for details.
 
 ## Install and connect
 

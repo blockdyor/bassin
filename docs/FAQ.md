@@ -4,7 +4,7 @@
 
 ## Which version does this documentation cover?
 
-The redesigned community release, Bassin package 2.1.16 (UI 2.1.16) with CKPool `v1.2.0-2` (2-container low-RAM stack, built-in umbrelOS widgets including Worker Best Diff Leaderboard, live auto-saving Settings, automatic CKPool reload, Stratum V2 & optional Mining IPC). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
+The redesigned community release, Bassin package 2.1.17 (UI 2.1.17) with CKPool `v1.2.0-2` (Bitcoin Core v32+ IPC mount + RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, 2-container low-RAM stack, built-in Worker Best Diff Leaderboard widget, and Stratum V2). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
 
 ## What do I need, and what credentials go in my miner?
 
@@ -29,7 +29,7 @@ The UI was refactored from the actual Umbrel Bitcoin UI components, not just giv
 
 ## Do Settings changes apply automatically?
 
-Yes, starting in **2.1.15**. Settings loads your running `data/config/ckpool.conf` automatically (keeping stored Bitcoin RPC passwords safely redacted on the server), auto-saves valid changes, and reloads CKPool within seconds. You no longer need to import, export, or manually restart Bassin to toggle Stratum V2 or tune mining options. See the [settings guide](settings.md#live-auto-save--automatic-ckpool-reload).
+No — starting in **2.1.17**, Settings requires your Bassin app password (shown in Umbrel) and saves **only when you click Save or Save & Restart Pool**, so editing never accidentally kicks active miners or paid hashrate rentals. **Save** writes `ckpool.conf` without restarting CKPool; **Save & Restart Pool** confirms before disconnecting active workers and triggers a clean reload. Restricted keys (`donation`, `btcaddress`, `logdir`) can only be changed directly on disk. See the [settings guide](settings.md#hardened-live-settings--intentional-ckpool-reload).
 
 ## Do I need to change block notifications after updating?
 

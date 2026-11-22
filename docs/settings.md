@@ -2,17 +2,18 @@
 
 [Back to Bassin](../README.md)
 
-These instructions describe community release 2.1.15. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and optional Mining IPC controls, and **Mining** / **Advanced** for full CKPool tuning.
+These instructions describe community release 2.1.17. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and Bitcoin Core v32+ Mining IPC controls, and **Mining** / **Advanced** for CKPool tuning.
 
-## Live auto-save & automatic CKPool reload
+## Hardened live Settings & intentional CKPool reload
 
-Starting in **2.1.15**, Settings connects directly to your running `data/config/ckpool.conf`:
+Starting in **2.1.17**, Settings connects to your running `data/config/ckpool.conf` behind a per-app Bearer token and strict key allowlist:
 
-- **Auto-loaded on open:** Settings reads your running `ckpool.conf` automatically. Stored Bitcoin RPC passwords stay on the server (masked in the browser) and are preserved automatically when you save other settings — you never have to re-enter your RPC password just to toggle Stratum V2 or adjust difficulty.
-- **Auto-save on edit:** Whenever you toggle Stratum V2 or make any valid edit, Bassin validates the configuration and atomically saves `/config/ckpool.conf` (`0600`).
-- **Automatic CKPool reload:** CKPool’s startup supervisor watches `/config/ckpool.conf` for changes, gracefully stops CKPool (`SIGTERM`), and restarts it with the new configuration within seconds. Newly enabled Stratum V2 authority keys appear automatically in **Connect → Stratum V2**.
-- **Protected access:** Umbrel’s built-in proxy authentication protects the web UI and its `/api/config` endpoint; private Stratum V2 Noise keys in `data/sv2/` are never mounted in the UI container.
-- **Backup & Restore:** **Import config** and **Download config** remain available for backing up or restoring configurations (imported valid configs auto-save immediately; downloaded backups omit server-stored RPC passwords unless you explicitly type one).
+- **Per-app authentication:** `GET` and `PUT /api/config` require a Bearer token (`BASSIN_CONFIG_TOKEN`, populated from Umbrel’s per-app `APP_PASSWORD` via `deterministicPassword: true`). Unlock Settings once per browser tab using the app password shown in Umbrel — other containers on Umbrel’s internal Docker network cannot read or modify your pool config. The **Logs** tab stays accessible without unlocking.
+- **Strict key allowlist & path confinement:** Only allowlisted mining/node keys can be edited through the API. Restricted keys (`donation`, `btcaddress`, `logdir`, `proxy`, `redirecturl`) and unknown keys are rejected (edit `data/config/ckpool.conf` directly on disk if you ever want to change them). SV2 key paths are confined to `/sv2/`, and `ipcmining` is confined to `/bitcoin/` or `/run/bitcoind/`.
+- **Explicit Save vs Save & Restart Pool:** Changes are **never auto-saved** while you type, and editing `ckpool.conf` alone never kicks active miners or hashrate rentals:
+  - Click **Save** to write `/config/ckpool.conf` (`0600`, preserving stored server-side RPC passwords) without restarting CKPool — safe during active rentals.
+  - Click **Save & Restart Pool** (which confirms before disconnecting active workers) to write `/config/ckpool.conf` and trigger `/config/.reload-trigger` so CKPool’s supervisor gracefully restarts CKPool (`SIGTERM`).
+- **Protected access:** Umbrel’s `app_proxy` authentication protects the external web UI, `BASSIN_CONFIG_TOKEN` protects `/api/config` inside the Docker network, and private Stratum V2 Noise keys in `data/sv2/` are never mounted in the UI container.
 
 ## Manual backup or offline editing
 
@@ -77,12 +78,12 @@ CKPool creates missing Noise keys automatically on first start. Never place priv
 - **Connection Limits:** `maxclients`, `maxusers`, `maxsubclients` (`-1` = unlimited, default `65536`), `maxsendqueue` (bytes), and **Allow Client Reconnect** (`reconnect`, default enabled).
 - **Custom Configuration:** full raw JSON editor that preserves additional nodes and custom CKPool options.
 
-## CKPool v1.2.0-2, Bitcoin Core / Knots, and Mining IPC
+## CKPool v1.2.0-2, Bitcoin Core v32+ IPC, and Bitcoin Knots
 
-The `blockdyor/docker-ckpool-solo:v1.2.0-2` image (upstream commit `be3e1e07` with pinned `secp256k1` `ebf59432`) compiles in **ZeroMQ**, **Stratum V2 (`--enable-sv2`)**, and optional **Cap’n Proto Mining IPC**.
+The `blockdyor/docker-ckpool-solo:v1.2.0-2` image (upstream commit `be3e1e07` with pinned `secp256k1` `ebf59432`) compiles in **ZeroMQ**, **Stratum V2 (`--enable-sv2`)**, and **Cap’n Proto Mining IPC**.
 
-- **Bitcoin Knots (including 29.3 and earlier) and standard Bitcoin Core nodes:** Leave **Mining IPC Socket (`ipcmining`)** blank in **Settings → Bitcoin Node**. CKPool uses standard JSON-RPC + ZMQ and never opens an IPC socket, so both Stratum V1 and Stratum V2 solo mining work out of the box.
-- **Bitcoin Core v32.x Mining IPC (opt-in):** Set `ipcmining` to a mounted Unix socket from `bitcoind -ipcbind` if you want IPC template/block notifications or Stratum V2 Job Declaration (`sv2jdurl`).
+- **Bitcoin Core v32+ with IPC Mining Interface enabled:** Bassin mounts `${APP_BITCOIN_DATA_DIR}:/bitcoin:ro` read-only on `ckpool` (never on `ui`) and fresh installs set `"ipcmining": "/bitcoin/${APP_BITCOIN_IPC_SOCKET_RELATIVE_PATH:-node.sock}"` while keeping `btcd` RPC + `zmqblock` as fallback. When Umbrel exports `APP_BITCOIN_IPC_ENABLED=true`, CKPool waits up to 30 seconds at startup for `node.sock` to appear before starting. Existing installs can set **Mining IPC Socket (`ipcmining`)** to `/bitcoin/node.sock` in **Settings → Bitcoin Node** and click **Save & Restart Pool**.
+- **Bitcoin Knots (including 29.3 and earlier) and Bitcoin Core without IPC:** When `/bitcoin/node.sock` is absent, CKPool skips IPC with zero startup delay and uses standard JSON-RPC + ZMQ automatically for both Stratum V1 and Stratum V2 solo mining.
 
 The [pinned upstream configuration reference](https://bitbucket.org/ckolivas/ckpool/src/be3e1e0796fbea60b7792a9b62fc2614764e1fc0/README.md) and [container build](https://github.com/blockdyor/docker-ckpool-solo/blob/v1.2.0-2/Dockerfile) describe the underlying options and compiled capabilities.
 
