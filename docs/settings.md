@@ -2,7 +2,7 @@
 
 [Back to Bassin](../README.md)
 
-These instructions describe community release 2.1.17. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and Bitcoin Core v32+ Mining IPC controls, and **Mining** / **Advanced** for CKPool tuning.
+These instructions describe community release 2.1.18. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and Bitcoin Core v32+ Mining IPC controls, and **Mining** / **Advanced** for CKPool tuning.
 
 ## Hardened live Settings & intentional CKPool reload
 
@@ -73,7 +73,7 @@ CKPool creates missing Noise keys automatically on first start. Never place priv
 
 **Advanced** exposes:
 - **Work Update Interval** (`update_interval`, default `30` s) and **Log Directory** (`logdir`, keep `/www` for Bassin UI).
-- **Stratum V1 Listeners** (`serverurl`, comma-separated `host:port`; changing ports also requires matching container port mappings).
+- **Stratum V1 Listeners** (`serverurl`, comma-separated `host:port`, default `0.0.0.0:3333`; required whenever `sv2url` or `sv2jdurl` is configured because CKPool runs in Stratum V2-only mode when `sv2url` is set without `serverurl`; changing ports also requires matching container port mappings).
 - **Extranonce1 / Extranonce2 Lengths** (`nonce1length` `2–8` default `4`, `nonce2length` `2–8` default `8`).
 - **Connection Limits:** `maxclients`, `maxusers`, `maxsubclients` (`-1` = unlimited, default `65536`), `maxsendqueue` (bytes), and **Allow Client Reconnect** (`reconnect`, default enabled).
 - **Custom Configuration:** full raw JSON editor that preserves additional nodes and custom CKPool options.
