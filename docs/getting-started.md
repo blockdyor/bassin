@@ -8,7 +8,7 @@ As of 22 November 2026:
 
 | Channel | Version | App ID | Web port | Stratum ports |
 | --- | --- | --- | --- | --- |
-| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Package 2.1.17 / UI 2.1.17 / CKPool `v1.2.0-2` (`be3e1e07`) | `blockdyor-bassin` | `5009` | `3456` (SV1), `3457` (SV2), `3458` (SV2 JD) |
+| [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Package 2.1.17 / UI 2.1.17 / CKPool `v1.2.0-3` (`be3e1e07`) | `blockdyor-bassin` | `5009` | `3456` (SV1), `3457` (SV2), `3458` (SV2 JD) |
 | [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.17 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` (2.1.17 adds `3457`, `3458`) |
 
 The linked store manifests are the source of truth for later releases. The `duckaxe-bassin` package retained in the main project repository is legacy packaging, not the current community installation source.
@@ -35,7 +35,7 @@ Use the update offered by the store from which you installed Bassin. After updat
 
 If you use a public Bitcoin RPC endpoint for the globe marker, configure HTTPS for the location helper. The standard private Umbrel connection needs no change.
 
-The current community package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. Fresh installs enable Stratum V2 mining out of the box with persistent Noise keys in `data/sv2/`. Existing installations keep their `ckpool.conf` untouched and can toggle Stratum V2 on directly in **Settings → Stratum V2** — valid changes auto-save and reload CKPool automatically. See the [settings guide](settings.md).
+The current package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. On upgrade from pre-2.1.17 installs, `hooks/pre-start` runs a one-time migration (`SV2_MIGRATED`) that adds default Stratum V2 (`sv2url`, `/sv2` key paths) and `ipcmining` keys without overriding any values you already configured; if you later disable Stratum V2 in Settings, the flag ensures it stays off. See the [settings guide](settings.md).
 
 ## Switching between official and community installations
 

@@ -78,14 +78,14 @@ CKPool creates missing Noise keys automatically on first start. Never place priv
 - **Connection Limits:** `maxclients`, `maxusers`, `maxsubclients` (`-1` = unlimited, default `65536`), `maxsendqueue` (bytes), and **Allow Client Reconnect** (`reconnect`, default enabled).
 - **Custom Configuration:** full raw JSON editor that preserves additional nodes and custom CKPool options.
 
-## CKPool v1.2.0-2, Bitcoin Core v32+ IPC, and Bitcoin Knots
+## CKPool v1.2.0-3, Bitcoin Core v32+ IPC, and Bitcoin Knots
 
-The `blockdyor/docker-ckpool-solo:v1.2.0-2` image (upstream commit `be3e1e07` with pinned `secp256k1` `ebf59432`) compiles in **ZeroMQ**, **Stratum V2 (`--enable-sv2`)**, and **Cap’n Proto Mining IPC**.
+The `blockdyor/docker-ckpool-solo:v1.2.0-3` image (upstream commit `be3e1e07` with pinned `secp256k1` `ebf59432` and built-in `ckpool-start.sh` entrypoint) compiles in **ZeroMQ**, **Stratum V2 (`--enable-sv2`)**, and **Cap’n Proto Mining IPC**.
 
-- **Bitcoin Core v32+ with IPC Mining Interface enabled:** Bassin mounts `${APP_BITCOIN_DATA_DIR}:/bitcoin:ro` read-only on `ckpool` (never on `ui`) and fresh installs set `"ipcmining": "/bitcoin/${APP_BITCOIN_IPC_SOCKET_RELATIVE_PATH:-node.sock}"` while keeping `btcd` RPC + `zmqblock` as fallback. When Umbrel exports `APP_BITCOIN_IPC_ENABLED=true`, CKPool waits up to 30 seconds at startup for `node.sock` to appear before starting. Existing installs can set **Mining IPC Socket (`ipcmining`)** to `/bitcoin/node.sock` in **Settings → Bitcoin Node** and click **Save & Restart Pool**.
+- **Bitcoin Core v32+ with IPC Mining Interface enabled:** Bassin mounts `${APP_BITCOIN_DATA_DIR}:/bitcoin:ro` read-only on `ckpool` (never on `ui`) and sets `"ipcmining": "/bitcoin/${APP_BITCOIN_IPC_SOCKET_RELATIVE_PATH:-node.sock}"` on both fresh installs and pre-2.1.17 upgrades (`hooks/pre-start`) while keeping `btcd` RPC + `zmqblock` as fallback. When Umbrel exports `APP_BITCOIN_IPC_ENABLED=true`, CKPool waits up to 30 seconds at startup for `node.sock` to appear before starting.
 - **Bitcoin Knots (including 29.3 and earlier) and Bitcoin Core without IPC:** When `/bitcoin/node.sock` is absent, CKPool skips IPC with zero startup delay and uses standard JSON-RPC + ZMQ automatically for both Stratum V1 and Stratum V2 solo mining.
 
-The [pinned upstream configuration reference](https://bitbucket.org/ckolivas/ckpool/src/be3e1e0796fbea60b7792a9b62fc2614764e1fc0/README.md) and [container build](https://github.com/blockdyor/docker-ckpool-solo/blob/v1.2.0-2/Dockerfile) describe the underlying options and compiled capabilities.
+The [pinned upstream configuration reference](https://bitbucket.org/ckolivas/ckpool/src/be3e1e0796fbea60b7792a9b62fc2614764e1fc0/README.md) and [container build](https://github.com/blockdyor/docker-ckpool-solo/blob/v1.2.0-3/Dockerfile) describe the underlying options and compiled capabilities.
 
 ![Bitcoin node notification controls in Bassin 2.1.10](images/notifications.png)
 

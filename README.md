@@ -8,7 +8,7 @@ Run a Bitcoin solo mining pool on your Umbrel. Your node supplies the block temp
 
 Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard based on the [Umbrel Bitcoin UI](https://github.com/getumbrel/umbrel-bitcoin/tree/master/apps/ui). Open Home to see your pool’s hashrate, or use Insights to check an individual worker.
 
-**Current community release: package 2.1.17 (Bassin UI 2.1.17) with CKPool `v1.2.0-2` (Bitcoin Core v32+ IPC mining with RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, 2-container low-RAM architecture, and built-in Worker Best Diff Leaderboard widget).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 22 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.17.
+**Current community release: package 2.1.17 (Bassin UI 2.1.17) with CKPool `v1.2.0-3` (Bitcoin Core v32+ IPC mining with RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, 2-container low-RAM architecture, and built-in Worker Best Diff Leaderboard widget).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 23 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.17.
 
 ![Bassin gallery: mining with your own Bitcoin node](docs/gallery/01-decentralization.jpg)
 

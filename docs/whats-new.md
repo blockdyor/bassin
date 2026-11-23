@@ -4,13 +4,15 @@
 
 This guide covers the changes now available in the community release through **2.1.17**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
 
-## 2.1.17 — 22 November 2026 (Bitcoin Core v32+ IPC Mining & Config API Hardening)
+## 2.1.17 — 23 November 2026 (Bitcoin Core v32+ IPC Mining, Config API Hardening & CKPool `v1.2.0-3`)
 
-- **Native Bitcoin Core v32+ IPC mining support:** Mounts `${APP_BITCOIN_DATA_DIR}:/bitcoin:ro` read-only on `ckpool` (never on `ui`), configures `"ipcmining": "/bitcoin/${APP_BITCOIN_IPC_SOCKET_RELATIVE_PATH:-node.sock}"` on fresh installs while preserving `btcd` RPC + `zmqblock` fallback, and waits up to 30 seconds at startup **only when `APP_BITCOIN_IPC_ENABLED=true`** so `node.sock` is ready before CKPool's startup check (zero startup delay on Bitcoin Knots or non-IPC nodes).
+- **CKPool `v1.2.0-3` built-in supervisor entrypoint:** Moves `ckpool-start.sh` directly into `ghcr.io/blockdyor/docker-ckpool-solo:v1.2.0-3` so `docker-compose.yml` stays clean with only `command:`.
+- **Automatic one-time Stratum V2 + IPC migration for existing installs:** `hooks/pre-start` adds default `sv2url`, `/sv2` key paths, and `ipcmining` keys once (`SV2_MIGRATED` flag) without overwriting existing user values and respecting later edits in Settings.
+- **Native Bitcoin Core v32+ IPC mining support:** Mounts `${APP_BITCOIN_DATA_DIR}:/bitcoin:ro` read-only on `ckpool` (never on `ui`), configures `"ipcmining": "/bitcoin/${APP_BITCOIN_IPC_SOCKET_RELATIVE_PATH:-node.sock}"` while preserving `btcd` RPC + `zmqblock` fallback, and waits up to 30 seconds at startup **only when `APP_BITCOIN_IPC_ENABLED=true`** so `node.sock` is ready before CKPool's startup check (zero startup delay on Bitcoin Knots or non-IPC nodes).
 - **Intra-Docker-network Config API authentication:** Requires a Bearer token (`BASSIN_CONFIG_TOKEN` backed by Umbrel's deterministic `APP_PASSWORD`) on `GET` and `PUT /api/config` (failing closed if unset), so other containers on Umbrel's Docker network cannot read or modify `ckpool.conf`. Logs stay accessible without unlocking Settings.
 - **Strict Config API key allowlist & path confinement:** Blocks modifying `donation`, `btcaddress`, `logdir`, `proxy`, `redirecturl`, and any non-allowlisted key through the API, confines SV2 key paths to `/sv2/`, and confines `ipcmining` to `/bitcoin/` or `/run/bitcoind/`.
 - **Explicit Save & gated CKPool reload (rental-safe):** Replaces debounced auto-save and 2-second `ckpool.conf` polling with explicit **Save** (writes config without restarting CKPool) and **Save & Restart Pool** (confirms when active workers are connected and writes `/config/.reload-trigger` so CKPool only restarts intentionally).
-- UI build [`14967e5`](https://github.com/blockdyor/bassin-ui/actions/runs/45068365297) (SonarCloud Quality Gate A / 0 issues), CKPool build [`v1.2.0-2`](https://github.com/blockdyor/docker-ckpool-solo/actions/runs/45047644486).
+- UI build [`14967e5`](https://github.com/blockdyor/bassin-ui/actions/runs/45068365297) (SonarCloud Quality Gate A / 0 issues), CKPool build [`v1.2.0-3`](https://github.com/blockdyor/docker-ckpool-solo/releases/tag/v1.2.0-3).
 
 ## 2.1.16 — 22 November 2026 (Low-RAM 2-Container Stack & Built-In Worker Leaderboard Widgets)
 
@@ -93,9 +95,9 @@ In 2.1.10 these were file-editing controls; starting in **2.1.15**, valid change
 
 ## The CKPool container
 
-The community release uses [Blockdyor’s CKPool Solo container](https://github.com/blockdyor/docker-ckpool-solo) (`v1.2.0-2`), packaging pinned upstream CKPool `be3e1e07` and `secp256k1` `ebf59432` for amd64 and arm64. The image is pinned by digest in the store manifest. Packaging uses portable compilation settings, a non-root `1000:1000` runtime, ZeroMQ, Noise-encrypted Stratum V2 (`--enable-sv2`), and optional Cap’n Proto Mining IPC.
+The community release uses [Blockdyor’s CKPool Solo container](https://github.com/blockdyor/docker-ckpool-solo) (`v1.2.0-3`), packaging pinned upstream CKPool `be3e1e07` and `secp256k1` `ebf59432` for amd64 and arm64. The image is pinned by digest in the store manifest. Packaging uses portable compilation settings, a non-root `1000:1000` runtime, ZeroMQ, Noise-encrypted Stratum V2 (`--enable-sv2`), optional Cap’n Proto Mining IPC, and a built-in startup supervisor entrypoint.
 
-Maintaining this container lets Bassin’s backend and UI changes be tested and released together. The mining software remains upstream CKPool; this is a maintained packaging path. Work proposed for Umbrel’s container is tracked in [getumbrel/docker-ckpool-solo PR #9](https://github.com/getumbrel/docker-ckpool-solo/pull/9).
+Maintaining this container at `ghcr.io/blockdyor/docker-ckpool-solo` lets Bassin’s backend and UI changes be tested and released together. The mining software remains upstream CKPool; this is the maintained packaging used by both the community and official Umbrel packages.
 
 Standard JSON-RPC + ZMQ remains the default so both **Bitcoin Core** and **Bitcoin Knots** (including 29.3 and earlier) work out of the box without enabling IPC. Backend improvements do not increase an ASIC’s physical hashrate. Available capabilities are described in the [settings guide](settings.md#ckpool-v120-2-bitcoin-core--knots-and-mining-ipc).
 
