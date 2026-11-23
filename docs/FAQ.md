@@ -45,7 +45,7 @@ No. In CKPool’s JSON, `btcd` is the list of Bitcoin node connections, `[0]` se
 
 Yes — starting in **Bassin 2.1.14** (`docker-ckpool-solo:v1.2.0-2`), CKPool is compiled with both **Noise-encrypted Stratum V2** (`--enable-sv2`) and optional **Cap’n Proto Mining IPC**:
 
-- **Stratum V2 Mining** (`3457` → container `3336`) works over standard JSON-RPC + ZMQ with both Bitcoin Core and Bitcoin Knots. Fresh installs enable it by default with persistent private Noise keys stored in `data/sv2/`. Existing installs can toggle it on directly in **Settings → Stratum V2** — changes save and reload CKPool automatically.
+- **Stratum V2 Mining** (`3457` → container `3336`) works over standard JSON-RPC + ZMQ with both Bitcoin Core and Bitcoin Knots. It is off by default so standard Stratum V1 (`3456`) stays minimal; toggle it on anytime in **Settings → Stratum V2** and click **Save & Restart Pool** (which keeps `serverurl` active and stores persistent private Noise keys in `data/sv2/`).
 - **Mining IPC (`ipcmining`)** and **Stratum V2 Job Declaration (`sv2jdurl`, port `3458`)** are strictly opt-in and inactive unless configured in Settings. Using them requires Bitcoin Core v32.x with `-ipcbind`. See [Stratum V2 and Mining IPC](settings.md#stratum-v2-and-noise-keys).
 
 ## What are Round Best Share and Best Share Ever?

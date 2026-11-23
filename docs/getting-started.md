@@ -35,7 +35,7 @@ Use the update offered by the store from which you installed Bassin. After updat
 
 If you use a public Bitcoin RPC endpoint for the globe marker, configure HTTPS for the location helper. The standard private Umbrel connection needs no change.
 
-The current package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. On upgrade from earlier installs, `hooks/pre-start` runs one-time migrations (`SV2_MIGRATED`, `SV1_SERVERURL_MIGRATED`) that add explicit Stratum V1 (`serverurl: ["0.0.0.0:3333"]`), Stratum V2 (`sv2url`, `/sv2` key paths), and `ipcmining` keys without overriding any values you already configured; if you later disable Stratum V1 or Stratum V2 in Settings, the flags ensure your choice persists. See the [settings guide](settings.md).
+The current package creates `data/config/ckpool.conf` only when it is missing, preserving an existing configuration on restart. Fresh installs enable Stratum V1 (`serverurl: ["0.0.0.0:3333"]`) and configure `ipcmining` by default, leaving Stratum V2 opt-in via **Settings → Stratum V2**. On upgrade from earlier installs, `hooks/pre-start` runs one-time migrations (`IPC_MIGRATED`, `SV1_SERVERURL_MIGRATED`) that add `ipcmining` without overriding existing values and restore `serverurl: ["0.0.0.0:3333"]` for any 2.1.17 install that had `sv2url` without `serverurl`. See the [settings guide](settings.md).
 
 ## Switching between official and community installations
 

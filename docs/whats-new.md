@@ -4,10 +4,10 @@
 
 This guide covers the changes now available in the community release through **2.1.18**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
 
-## 2.1.18 — 23 November 2026 (Stratum V1 Port 3456 Fix Alongside Stratum V2)
+## 2.1.18 — 23 November 2026 (Stratum V1 Port 3456 Fix & Opt-In Stratum V2 Default)
 
-- **Restores Stratum V1 port `3456` alongside Stratum V2 (`3457`):** Upstream CKPool only falls back to default Stratum V1 port `3333` when neither `serverurl` nor `sv2url` is configured; setting `sv2url` without `serverurl` in 2.1.17 caused CKPool to run Stratum V2-only and reset connections on port `3456`. Both `ckpool.conf.template` and `hooks/pre-start` (`SV1_SERVERURL_MIGRATED`) now configure `"serverurl": ["0.0.0.0:3333"]` explicitly alongside `"sv2url": ["0.0.0.0:3336"]`, automatically fixing both fresh installs and existing 2.1.17 installations on upgrade.
-- **Safer Stratum V2 toggle in Bassin UI:** Enabling Stratum V2 or Job Declaration in **Settings → Stratum V2** now automatically preserves/adds `serverurl: ["0.0.0.0:3333"]`, displays a warning with a one-click fix if Stratum V2 is enabled without `serverurl`, and updates the **Advanced → Stratum V1 Listeners** guidance.
+- **Restores Stratum V1 port `3456` and makes Stratum V2 opt-in by default:** Upstream CKPool only falls back to default Stratum V1 port `3333` when neither `serverurl` nor `sv2url` is configured; setting `sv2url` without `serverurl` in 2.1.17 caused CKPool to run Stratum V2-only and reset connections on port `3456`. Fresh installs now configure `"serverurl": ["0.0.0.0:3333"]` and leave Stratum V2 off by default (opt-in anytime via **Settings → Stratum V2**), while `hooks/pre-start` (`IPC_MIGRATED`, `SV1_SERVERURL_MIGRATED`) adds `ipcmining` to pre-2.1.17 installs without enabling SV2 and automatically restores `"serverurl": ["0.0.0.0:3333"]` on existing 2.1.17 installs.
+- **Safer Stratum V2 toggle in Bassin UI:** Enabling Stratum V2 or Job Declaration in **Settings → Stratum V2** now automatically preserves/adds `serverurl: ["0.0.0.0:3333"]` and `/sv2/` persistent key paths, displays a warning with a one-click fix if Stratum V2 is enabled without `serverurl`, and updates the **Advanced → Stratum V1 Listeners** guidance.
 - UI build [`8f197b0`](https://github.com/blockdyor/bassin-ui/actions/runs/45258248677), CKPool build [`v1.2.0-3`](https://github.com/blockdyor/docker-ckpool-solo/releases/tag/v1.2.0-3).
 
 ## 2.1.17 — 23 November 2026 (Bitcoin Core v32+ IPC Mining, Config API Hardening & CKPool `v1.2.0-3`)
