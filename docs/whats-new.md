@@ -2,7 +2,12 @@
 
 [Back to Bassin](../README.md)
 
-This guide covers the changes now available in the community release through **2.1.19**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+This guide covers the changes now available in the community release through **2.1.20**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+
+## 2.1.20 — 25 November 2026 (State-Aware Pool Startup Status)
+
+- **Natural startup & idle status on Home and Insights:** Replaces `Running for 0m` on fresh pool starts with state-aware status text in the same blue/grey styling (`Running · Ready for miners`, `Running · Awaiting first share`, `Running · Just started`, `Running for Xm · Ready for miners` / `Awaiting shares`, transitioning to `Running for Xh Ym` once shares arrive), and formats sub-minute uptime in **Insights → Uptime** as `< 1m`.
+- UI build [`457b8f3`](https://github.com/blockdyor/bassin-ui/actions/runs/45707692746), CKPool build [`v1.2.0-3`](https://github.com/blockdyor/docker-ckpool-solo/releases/tag/v1.2.0-3).
 
 ## 2.1.19 — 25 November 2026 (Offline Local GeoIP for Pool Globe)
 
@@ -114,4 +119,4 @@ Standard JSON-RPC + ZMQ remains the default so both **Bitcoin Core** and **Bitco
 
 ## Official and community releases
 
-The current community release (2.1.19) is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 25 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.19 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.
+The current community release (2.1.20) is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 25 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.20 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.

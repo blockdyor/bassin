@@ -4,7 +4,7 @@
 
 ## Which version does this documentation cover?
 
-The redesigned community release, Bassin package 2.1.19 (UI 2.1.19) with CKPool `v1.2.0-3` (simultaneous Stratum V1 + Stratum V2, Bitcoin Core v32+ IPC mount + RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, offline local GeoIP for the globe marker, 2-container low-RAM stack, and built-in Worker Best Diff Leaderboard widget). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
+The redesigned community release, Bassin package 2.1.20 (UI 2.1.20) with CKPool `v1.2.0-3` (simultaneous Stratum V1 + Stratum V2, Bitcoin Core v32+ IPC mount + RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, offline local GeoIP for the globe marker, 2-container low-RAM stack, and built-in Worker Best Diff Leaderboard widget). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
 
 ## What do I need, and what credentials go in my miner?
 
