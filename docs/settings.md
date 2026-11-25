@@ -2,7 +2,7 @@
 
 [Back to Bassin](../README.md)
 
-These instructions describe community release 2.1.18. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and Bitcoin Core v32+ Mining IPC controls, and **Mining** / **Advanced** for CKPool tuning.
+These instructions describe community release 2.1.19. Open **Settings → Stratum V2** for encrypted Stratum V2 & Job Declaration options, **Settings → Bitcoin Node** for the Bitcoin RPC, ZMQ, polling, and Bitcoin Core v32+ Mining IPC controls, and **Mining** / **Advanced** for CKPool tuning.
 
 ## Hardened live Settings & intentional CKPool reload
 

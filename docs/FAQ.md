@@ -4,7 +4,7 @@
 
 ## Which version does this documentation cover?
 
-The redesigned community release, Bassin package 2.1.18 (UI 2.1.18) with CKPool `v1.2.0-3` (simultaneous Stratum V1 + Stratum V2, Bitcoin Core v32+ IPC mount + RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, 2-container low-RAM stack, and built-in Worker Best Diff Leaderboard widget). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
+The redesigned community release, Bassin package 2.1.19 (UI 2.1.19) with CKPool `v1.2.0-3` (simultaneous Stratum V1 + Stratum V2, Bitcoin Core v32+ IPC mount + RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, offline local GeoIP for the globe marker, 2-container low-RAM stack, and built-in Worker Best Diff Leaderboard widget). Official 2.1.4 has the older dashboard, without Connect, Insights, or the Settings editor/log viewer. Check your channel in Umbrel and consult the [release channels](getting-started.md#choose-a-release-channel) before following version-specific instructions.
 
 ## What do I need, and what credentials go in my miner?
 
@@ -76,7 +76,7 @@ The approximate location of a public IP reported by your Bitcoin node. You can d
 
 The node-location helper uses HTTPS for public Bitcoin RPC endpoints. It allows plain HTTP only to a private or loopback address. This rule applies to the globe marker, not to miner Stratum connections or CKPool’s mining RPC client.
 
-The server-side helper sends the node’s public IP to `ipwho.is` for approximate coordinates and caches the result. The browser reads the resulting local metadata file. If the node only reports private, loopback, or Tor addresses, or no usable metadata is available, the globe has no marker. A remotely hosted Bitcoin node produces a marker at that node’s approximate location, not your miner’s location.
+The server-side helper resolves the node’s public IP locally against a bundled offline GeoIP database (DB-IP City Lite, CC BY 4.0, read on disk via `py3-maxminddb`) and writes the resulting local metadata file for the browser. Neither the server nor the browser contacts any external geolocation or IP-lookup service. If the node only reports private, loopback, or Tor addresses, or no usable metadata is available, the globe has no marker. A remotely hosted Bitcoin node produces a marker at that node’s approximate location, not your miner’s location.
 
 ## Why does the header show `CKPool —`?
 

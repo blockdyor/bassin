@@ -2,7 +2,12 @@
 
 [Back to Bassin](../README.md)
 
-This guide covers the changes now available in the community release through **2.1.18**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+This guide covers the changes now available in the community release through **2.1.19**. Store release notes and [Bassin UI pull requests](https://github.com/blockdyor/bassin-ui/pulls?q=is%3Apr+is%3Amerged) provide the implementation history.
+
+## 2.1.19 — 25 November 2026 (Offline Local GeoIP for Pool Globe)
+
+- **Zero external geolocation calls:** Replaces the unintended `ipwho.is` lookup in `scripts/pool-location.py` with a 100% local, offline MMDB lookup (`py3-maxminddb` + pinned, SHA-256-verified DB-IP City Lite under CC BY 4.0) opened on disk (`MODE_FILE`, zero persistent RAM overhead). The location helper now communicates exclusively with your configured local Bitcoin node over RPC (`getnetworkinfo` / `getpeerinfo`) to obtain the node’s own public IP and resolves approximate globe coordinates entirely offline.
+- UI build [`a082598`](https://github.com/blockdyor/bassin-ui/actions/runs/45563818764), CKPool build [`v1.2.0-3`](https://github.com/blockdyor/docker-ckpool-solo/releases/tag/v1.2.0-3).
 
 ## 2.1.18 — 23 November 2026 (Stratum V1 Port 3456 Fix & Opt-In Stratum V2 Default)
 
@@ -109,4 +114,4 @@ Standard JSON-RPC + ZMQ remains the default so both **Bitcoin Core** and **Bitco
 
 ## Official and community releases
 
-The current community release (2.1.18) is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 23 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.18 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.
+The current community release (2.1.19) is available through [Blockdyor’s store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin). As of 25 November 2026, the official store ships 2.1.4. [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.19 and supersedes [#6167](https://github.com/getumbrel/umbrel-apps/pull/6167). A community update does not automatically update the official listing.
