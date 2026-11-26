@@ -4,12 +4,12 @@
 
 ## Choose a release channel
 
-As of 25 November 2026:
+As of 26 November 2026:
 
 | Channel | Version | App ID | Web port | Stratum ports |
 | --- | --- | --- | --- | --- |
+| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Package 2.1.20 / UI 2.1.20 / CKPool `v1.2.0-3` (`be3e1e07`) | `bassin` | `5008` | `3456` (SV1), `3457` (SV2), `3458` (SV2 JD) |
 | [Blockdyor community store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store/tree/master/blockdyor-bassin) | Package 2.1.20 / UI 2.1.20 / CKPool `v1.2.0-3` (`be3e1e07`) | `blockdyor-bassin` | `5009` | `3456` (SV1), `3457` (SV2), `3458` (SV2 JD) |
-| [Official Umbrel store](https://github.com/getumbrel/umbrel-apps/tree/master/bassin) | Bassin 2.1.4 / CKPool image v1.1.1; 2.1.20 proposed in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) | `bassin` | `5008` | `3456` (2.1.20 adds `3457`, `3458`) |
 
 The linked store manifests are the source of truth for later releases. The `duckaxe-bassin` package retained in the main project repository is legacy packaging, not the current community installation source.
 
@@ -25,7 +25,7 @@ The linked store manifests are the source of truth for later releases. The `duck
 
 The Connect QR codes use the hostname in your browser’s address bar. If that name is only reachable through a proxy, enter your Umbrel’s LAN address on the miner instead. Miners use host TCP port `3456` (SV1) or `3457` (SV2) — and `3458` if Job Declaration is enabled — not the web port or the container’s internal `3333`/`3336`/`3337` ports. Give each miner a distinct worker name so you can identify it in Insights. Look for accepted shares on the miner; the dashboard may take a polling interval to show the worker.
 
-On official 2.1.4, there is no **Connect → Worker Setup**, Insights, or Settings editor/log viewer. Use the same miner fields in step 5 and check the version in the Umbrel app listing rather than looking for the community UI’s header.
+If you are still on an older 2.1.4 installation before updating, there is no **Connect → Worker Setup**, Insights, or Settings editor/log viewer — update Bassin in Umbrel or use the Stratum V1 miner fields in step 5.
 
 The standard package fills in the node’s RPC credentials and ZMQ hashblock endpoint on first installation. You do not need to configure Bitcoin Core’s separate `blocknotify` command for this setup. Leave an existing working configuration in place unless you intend to change it.
 

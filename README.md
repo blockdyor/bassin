@@ -8,7 +8,7 @@ Run a Bitcoin solo mining pool on your Umbrel. Your node supplies the block temp
 
 Bassin combines [CKPool](https://github.com/ckolivas/ckpool) with a dashboard based on the [Umbrel Bitcoin UI](https://github.com/getumbrel/umbrel-bitcoin/tree/master/apps/ui). Open Home to see your pool’s hashrate, or use Insights to check an individual worker.
 
-**Current community release: package 2.1.20 (Bassin UI 2.1.20) with CKPool `v1.2.0-3` (simultaneous Stratum V1 + Stratum V2, Bitcoin Core v32+ IPC mining with RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, offline local GeoIP globe lookup, 2-container low-RAM architecture, and built-in Worker Best Diff Leaderboard widget).** Install it through the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store). The official store still ships 2.1.4 as of 25 November 2026; [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) proposes 2.1.20.
+**Current release: Bassin 2.1.20 (Bassin UI 2.1.20) with CKPool `v1.2.0-3` (simultaneous Stratum V1 + opt-in Noise-encrypted Stratum V2, Bitcoin Core v32+ IPC mining with RPC/ZMQ fallback, hardened Bearer-authenticated Config API with key allowlist & explicit Save/Restart, offline local GeoIP globe lookup, 2-container low-RAM architecture, and built-in Worker Best Diff Leaderboard widget).** Available in both the [Official Umbrel App Store](https://apps.umbrel.com/app/bassin) (merged in [PR #6404](https://github.com/getumbrel/umbrel-apps/pull/6404) on 26 November 2026) and the [Blockdyor community app store](https://github.com/blockdyor/blockdyor-umbrel-community-app-store).
 
 ![Bassin gallery: mining with your own Bitcoin node](docs/gallery/01-decentralization.jpg)
 
@@ -18,7 +18,7 @@ California is the demo location shown in the gallery. Self-hosting keeps your po
 
 ## What’s inside
 
-These features describe the community dashboard. The official store’s 2.1.4 dashboard does not have the Connect dialog, Insights, or the Settings editor and log viewer. You can still connect a miner using the values below.
+These features are available in Bassin 2.1.20 on both the Official Umbrel App Store and the Blockdyor community app store. Older installations (2.1.4 and earlier) use the previous dashboard without the Connect dialog, Insights, or the Settings editor and log viewer.
 
 - **Home:** interactive globe, accepted/rejected share quality, and animated hashrate averages from one minute to seven days.
 - **Insights:** workers, round best share, best share ever, share rate, uptime, a hashrate chart, live **Stratum V2 & Job Declaration** telemetry, and searchable worker details.
